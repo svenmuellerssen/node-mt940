@@ -1,5 +1,5 @@
 var Saldo = function() {
-  this._creditDebit = 0;
+  this._type = 0;
   this._bookingDate = 0;
   this.currency = '';
   this._amount = 0;
@@ -20,7 +20,7 @@ Saldo.prototype.setCreditDebit = function(value) {
   value = (typeof parseInt(value) === 'number') ? value : null;
 
   if (value !== null)
-    this._creditDebit = value;
+    this._type = value;
 
   return this;
 };
@@ -30,7 +30,7 @@ Saldo.prototype.setCreditDebit = function(value) {
  * @returns {number|*}
  */
 Saldo.prototype.getCreditDebit = function() {
-  return this._creditDebit;
+  return this._type;
 };
 
 /**
