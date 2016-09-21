@@ -34,7 +34,6 @@ Extract.prototype.getSheetNumber = function() {
 
 Extract.prototype.addTransaction = function(transaction, callback) {
   if (ring.instance(transaction, Transaction) === true) {
-    transaction.setId(this.transactions.size);
     this.transactions.add(transaction, callback);
   }
 

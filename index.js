@@ -77,8 +77,9 @@ MT940.prototype.parseConfiguration = function(configuration) {
   configuration = configuration || {
       parser: MT940.PARSER_NONE,
       writer: MT940.WRITER_NONE,
-      path: '',
-      writeAs: MT940.WRITE_PLAIN_TEXT
+      pathToContent: '',
+      writeAs: MT940.WRITE_PLAIN_TEXT,
+      gvcData: []
     };
 
   this.setParser(configuration.parser);
@@ -86,4 +87,5 @@ MT940.prototype.parseConfiguration = function(configuration) {
   this.parser.setFilePath(configuration.path);
   this.writer.writeAs(configuration.writeAs);
 };
+
 module.exports = MT940;

@@ -108,7 +108,7 @@ Parser.prototype.execute = function(callback) {
           var transaction = null;
           for(var i= 1; i < extractSnippets.length; i++) {
             snippet = extractSnippets[i];
-            var type = snippet.match(/(:[2-9CFcf]{2,3}:)/);
+            var type = snippet.match(/(:[2-9CFcf]{2,3}:)/ig);
 
             switch(type) {
               case ':25:':
@@ -139,11 +139,16 @@ Parser.prototype.execute = function(callback) {
                   ));
                 break;
               case ':61:':
-                if (transaction !== null)
-                  extract.addTransaction(transaction, function() {});
-
                 transaction = Transaction.instance();
                 transaction.setRevenueInformation(snippet);
+                break;
+              case ':86:':
+                var reference = PaymentReference.instance()
+                  , information = snippet.match(/[^:86](.*)/gi);
+                reference.setMultiPurposeInformation(information);
+
+                transaction.setReference(reference);
+                extract.addTransaction(transaction, function() {});
                 break;
               case ':62F:':
               case ':62f:':
@@ -153,12 +158,6 @@ Parser.prototype.execute = function(callback) {
                     snippet.match(/[^:62Ff:](.*)/),
                     Saldo.TYPE_SALDO_END
                   ));
-                break;
-              case ':86:':
-                if (transaction === null)
-                  transaction = Transaction.instance();
-              default: // Line without identifier is carriage return newline from identifier before.
-                transaction.setMultiPurposeInformation(snippet);
                 break;
             }
           }
