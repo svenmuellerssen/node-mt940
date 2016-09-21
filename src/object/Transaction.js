@@ -247,7 +247,7 @@ TransactionFunction.prototype.setRevenueInformation = function(line) {
     var amount = line.match(/[0-9,\.]{1,}/);
     if (amount.length > 0) this.setAmount(amount[0].replace(',', '.'));
 
-    // Set the last character of the current iso _code.
+    // Set the last character of the current iso code.
     this.setLastCharIsoCode(line.substring(1, amount['index']));
 
     // Set the official booking key.
