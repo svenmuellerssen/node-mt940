@@ -1,12 +1,15 @@
 var ring = require('ring')
-  , Revenues = require('./../object/Revenues');
+  , Revenues = require('../object/Revenues')
+  , AWriter = require('./AWriter');
 
 var WriterSparkasse = function() {
   this.path = null;
   this.filename = null;
   this.start = "\n";
   this.separator = "-\n";
+  this.writeAs = 0;
 };
+
 
 WriterSparkasse.prototype.writePlainText = function(revenues, callback) {
   revenues = (ring.instance(revenues, Revenues)) ? revenues : null;
@@ -53,14 +56,20 @@ WriterSparkasse.prototype.writeCSV = function(revenues, callback) {
   }
 };
 
+WriterSparkasse.prototype.writeAs = function(value) {
+
+};
+
 var writeToFile = function(text, path, callback) {
   var me = this;
 
   callback(null, me);
 };
 
-WriterSparkasse.instance = function() {
-  return new WriterSparkasse();
+var Writer = ring.create([WriterSparkasse, AWriter], {});
+
+Writer.instance = function() {
+  return new Writer();
 };
 
-module.exports = WriterSparkasse;
+module.exports = Writer;

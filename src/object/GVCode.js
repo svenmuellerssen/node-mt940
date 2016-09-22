@@ -32,17 +32,13 @@ GVCode.prototype.getText = function() {
  *
  * @param value
  */
-GVCode.prototype.setValue = function(value) {
-  this._value.data = value;
+GVCode.prototype.toValues = function() {
+  return {
+    code: this._code,
+    text: this._text
+  };
 };
 
-/**
- *
- * @returns {null}
- */
-GVCode.prototype.getValue = function() {
-  return this._value.data;
-};
 /**
  * Set a specific object to be the previous object in a chain.
  *
@@ -83,7 +79,6 @@ GVCode.prototype.next = function() {
   return this._next.data;
 };
 
-
 /**
  *
  * @returns {boolean}
@@ -92,7 +87,6 @@ GVCode.prototype.hasPrevious = function() {
   return (this._previous.data !== null);
 };
 
-
 /**
  *
  * @returns {boolean}
@@ -100,6 +94,7 @@ GVCode.prototype.hasPrevious = function() {
 GVCode.prototype.hasNext = function() {
   return (this._next.data !== null);
 };
+
 GVCode.Create = function() {
   return new GVCode();
 };

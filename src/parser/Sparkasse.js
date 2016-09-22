@@ -1,9 +1,10 @@
 var _ = require('underscore')
   , LinkedList = require('node-linkedlist')
-  , Revenues = require('./src/Object/Revenues')
-  , Extract = require('./src/Object/Extract')
-  , Saldo = require('./src/Object/Saldo')
-  , Transaction = require('./src/Object/Transaction');
+  , Revenues = require('../object/Revenues')
+  , Extract = require('../object/Extract')
+  , Saldo = require('../object/Saldo')
+  , Transaction = require('../object/Transaction')
+  , PaymentReference = require('../object/PaymentReference');
 
 var Parser = function() {
   this.content = '' +
@@ -133,10 +134,11 @@ Parser.prototype.execute = function(callback) {
               case ':60f:':
                 // [^:60Ff:](.*)
                 extract.setStartSaldo(
-                  Saldo.instance().setSaldo(
-                    snippet.match(/[^:60FfMm:](.*)/),
-                    Saldo.TYPE_SALDO_END
-                  ));
+                  Saldo.instance()
+                    .setSaldo(
+                      snippet.match(/[^:60FfMm:](.*)/),
+                      Saldo.TYPE_SALDO_END
+                    ));
                 break;
               case ':61:':
                 transaction = Transaction.instance();

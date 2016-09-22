@@ -4,7 +4,7 @@ module.exports = [
   {"code": 3, "text" : ""},
   {"code": 4, "text" : ""},
   {"code": 5, "text" : ""},
-  {"code": 6, "text" : ""},
+  {"code": 6, "text" : "GELDAUTOMAT"},
   {"code": 8, "text" : ""},
   {"code": 9, "text" : ""},
   {"code": 10, "text" : ""},

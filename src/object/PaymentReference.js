@@ -8,9 +8,24 @@ var PaymentReference = function() {
 
 };
 
-PaymentReference.prototype.setGVC = function(gvc) {
-  var code = GVCList.getByCodeNumber(gvc);
-  if (code !== null) this._gvc = code;
+PaymentReference.prototype.setGVC = function(gvc, text, check) {
+  gvc = (typeof parseInt(gvc) === 'number') ? parseInt(gvc) : null;
+  text = (typeof text === 'string') ? text : '';
+  check = (check === true);
+
+  if (gvc !== null) {
+    if (check) {
+      var code = GVCList.getByCodeNumber(gvc);
+      if (code !== null)
+        this._gvc = code.toValues();
+    } else {
+      this._gvc = {
+        code: gvc,
+        text: text
+      };
+    }
+  }
+
   return this;
 };
 
@@ -19,6 +34,8 @@ PaymentReference.prototype.getGVC = function() {
 };
 
 PaymentReference.prototype.setBookingText = function(text) {
+  text = (typeof text === 'string') ? text : null;
+  if (text !== null) this._bookingText = text;
   return this;
 };
 
@@ -27,6 +44,8 @@ PaymentReference.prototype.getBookingText = function() {
 };
 
 PaymentReference.prototype.setPrimanotaNumber = function(number) {
+  number = (typeof parseInt(number) === 'number') ? parseInt(number) : null;
+  if (number !== null) this._primanotaNumber = number;
   return this;
 };
 
@@ -35,6 +54,8 @@ PaymentReference.prototype.getPrimanotaNumber = function() {
 };
 
 PaymentReference.prototype.setText = function(text) {
+  text = (typeof text === 'string') ? text : null;
+  if (text !== null) this._text = text;
   return this;
 };
 
@@ -45,3 +66,5 @@ PaymentReference.prototype.getText = function() {
 PaymentReference.instance = function() {
   return new PaymentReference();
 };
+
+module.exports = PaymentReference;

@@ -269,7 +269,6 @@ TransactionFunction.prototype.setMultiPurposeInformation = function(line) {
 
   if (line !== null) {
     var type = line.match(/C|D|RD|RC/ig);
-    console.log(type);
   }
 
   return this;
