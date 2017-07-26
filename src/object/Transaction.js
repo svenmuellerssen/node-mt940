@@ -1,19 +1,24 @@
 var ring = require('ring')
-  , linkedList = require('node-linkedlist').Create();
+  , PaymentReference = require('./PaymentReference');
 
 /**
  *
  * @constructor
  */
-var TransactionFunction = function() {
+var Transaction = function() {
+  this.name = "Transaction";
+  this._previous = {data: null};
+  this._next = {data: null};
   this._id = 0;
+
   this._valuta = 0;
   this._bookingDate = 0;
-  this._type = 0;
+  this._type = '';
   this._lastCharISOCode = '';
-  this._amount = 0;
+  this._amount = '';
   this._bookingKey = '';
   this._reference = '';
+  this._paymentReference = null;
 };
 
 /**
@@ -21,7 +26,7 @@ var TransactionFunction = function() {
  * @param id {number} Id
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setId = function(id) {
+Transaction.prototype.setId = function(id) {
   id = (typeof parseInt(id) === 'number') ? id : null;
 
   if (id !== null)
@@ -32,12 +37,12 @@ TransactionFunction.prototype.setId = function(id) {
 
 /**
  *
- * @param date {number} Timestamp
+ * @param dateTime {number} Timestamp
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setValuta = function(date) {
-  date = new Date(date).getTime();
-  date = (typeof parseInt(date) === 'number') ? date : null;
+Transaction.prototype.setValuta = function(dateTime) {
+  var date = new Date(dateTime);
+  date = (typeof date.getTime() === 'number') ? date : null;
   if (date !== null)
     this._valuta = date;
 
@@ -46,13 +51,12 @@ TransactionFunction.prototype.setValuta = function(date) {
 
 /**
  *
- * @param date {number} Timestamp
+ * @param dateTime {number} Timestamp
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setBookingDate = function(date) {
-  date = new Date(date).getTime();
-  date = (typeof parseInt(date) === 'number') ? date : null;
-
+Transaction.prototype.setBookingDate = function(dateTime) {
+  var date = new Date(dateTime);
+  date = (typeof date.getTime() === 'number') ? date : null;
   if (date !== null)
     this._bookingDate = date;
 
@@ -64,14 +68,14 @@ TransactionFunction.prototype.setBookingDate = function(date) {
  * @param type {number} Transaction type.
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setType = function(type) {
+Transaction.prototype.setType = function(type) {
   type = (typeof type === 'string') ? type : null;
   switch(type) {
     case Transaction.TYPE_CREDIT:
     case Transaction.TYPE_DEBIT:
     case Transaction.TYPE_CREDIT_STORNO:
     case Transaction.TYPE_DEBIT_STORNO:
-      this.type = type;
+      this._type = type;
       break;
   }
   return this;
@@ -82,7 +86,7 @@ TransactionFunction.prototype.setType = function(type) {
  * @param char {string} Last character of currency.
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setLastCharIsoCode = function(char) {
+Transaction.prototype.setLastCharIsoCode = function(char) {
   char = (typeof char === 'string' && char !== '') ? char : null;
 
   if (char !== null) {
@@ -94,11 +98,11 @@ TransactionFunction.prototype.setLastCharIsoCode = function(char) {
 
 /**
  *
- * @param amount {number} Transaction amount.
+ * @param amount {string} Transaction amount.
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setAmount = function(amount) {
-  amount = (typeof parseFloat(amount) === 'number' && amount !== '') ? parseFloat(amount).toFixed(6) : null;
+Transaction.prototype.setAmount = function(amount) {
+  amount = (typeof parseFloat(amount) === 'number' && amount !== '') ? amount : null;
 
   if (amount !== null) {
     this._amount = amount;
@@ -112,7 +116,7 @@ TransactionFunction.prototype.setAmount = function(amount) {
  * @param key {string} Official booking key.
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setBookingKey = function(key) {
+Transaction.prototype.setBookingKey = function(key) {
   key = (typeof key === 'string' && key !== '') ? key : null;
 
   if (key !== null) {
@@ -127,7 +131,7 @@ TransactionFunction.prototype.setBookingKey = function(key) {
  * @param reference {string} Transaction reference.
  * @returns {Transaction}
  */
-TransactionFunction.prototype.setReference = function(reference) {
+Transaction.prototype.setReference = function(reference) {
   reference = (typeof reference === 'string' && reference !== '') ? reference : null;
 
   if (reference !== null) {
@@ -142,7 +146,7 @@ TransactionFunction.prototype.setReference = function(reference) {
  *
  * @returns {number|*}
  */
-TransactionFunction.prototype.getId = function() {
+Transaction.prototype.getId = function() {
   return this._id;
 };
 
@@ -151,26 +155,60 @@ TransactionFunction.prototype.getId = function() {
  *
  * @returns {number|*}
  */
-TransactionFunction.prototype.getValuta = function() {
+Transaction.prototype.getValuta = function() {
   return this._valuta;
 };
 
+/**
+ * Get the transaction valuta.
+ *
+ * @returns {number|*}
+ */
+Transaction.prototype.getValutaAsTimestamp = function() {
+  return this._valuta.getTime();
+};
+
+Transaction.prototype.getFormattedValuta = function() {
+  var valuta = new Date(this.getValutaAsTimestamp());
+  return valuta.getMonth() + valuta.getDay();
+};
 /**
  * Get the booking date of the transaction.
  *
  * @returns {number|*}
  */
-TransactionFunction.prototype.getBookingDate = function() {
+Transaction.prototype.getBookingDate = function() {
   return this._bookingDate;
 };
 
+Transaction.prototype.getFormattedBookingDate = function() {
+  var bookingDate = new Date(this.getBookingDate());
+  return bookingDate.getYear() + bookingDate.getMonth() + bookingDate.getDay();
+};
 /**
  * Get the transaction type.
  *
  * @returns {*}
  */
-TransactionFunction.prototype.getType = function() {
-  return this.type;
+Transaction.prototype.getType = function() {
+  return this._type;
+};
+
+Transaction.prototype.getTypeString = function() {
+  switch(this._type) {
+    case Transaction.TYPE_CREDIT:
+      return 'C';
+      break;
+    case Transaction.TYPE_DEBIT:
+      return 'D';
+      break;
+    case Transaction.TYPE_CREDIT_STORNO:
+      return 'RC';
+      break;
+    case Transaction.TYPE_DEBIT_STORNO:
+      return 'RD';
+      break;
+  }
 };
 
 /**
@@ -178,7 +216,7 @@ TransactionFunction.prototype.getType = function() {
  *
  * @returns {string|*}
  */
-TransactionFunction.prototype.getLastCharIsoCode = function() {
+Transaction.prototype.getLastCharIsoCode = function() {
   return this._lastCharISOCode;
 };
 
@@ -187,8 +225,8 @@ TransactionFunction.prototype.getLastCharIsoCode = function() {
  *
  * @returns {Number}
  */
-TransactionFunction.prototype.getAmount = function() {
-  return parseFloat(this._amount);
+Transaction.prototype.getAmount = function() {
+  return this._amount;
 };
 
 /**
@@ -196,7 +234,7 @@ TransactionFunction.prototype.getAmount = function() {
  *
  * @returns {string|*}
  */
-TransactionFunction.prototype.getBookingKey = function() {
+Transaction.prototype.getBookingKey = function() {
   return this._bookingKey;
 };
 
@@ -205,15 +243,38 @@ TransactionFunction.prototype.getBookingKey = function() {
  *
  * @returns {string|*}
  */
-TransactionFunction.prototype.getReference = function() {
+Transaction.prototype.getReference = function() {
   return this._reference;
 };
 
 /**
  *
- * @param line
+ * @param paymentReference {PaymentReference}
+ * @returns {Transaction}
  */
-TransactionFunction.prototype.setRevenueInformation = function(line) {
+Transaction.prototype.setPaymentReference = function(paymentReference) {
+  paymentReference = paymentReference || null;
+
+  if (paymentReference !== null && ring.instance(paymentReference, PaymentReference) === true) {
+    this._paymentReference = paymentReference;
+  }
+
+  return this;
+};
+
+/**
+ *
+ * @returns {null|PaymentReference}
+ */
+Transaction.prototype.getPaymentReference = function() {
+  return this._paymentReference;
+};
+/**
+ *
+ * @param line
+ * @returns {Transaction}
+ */
+Transaction.prototype.parseLine = function(line) {
   // todo Implement regex the line and request methods
   // todo Format amount to german!!
   line = (typeof line === 'string') ? line : null;
@@ -245,13 +306,13 @@ TransactionFunction.prototype.setRevenueInformation = function(line) {
 
     // Set the transaction amount.
     var amount = line.match(/[0-9,\.]{1,}/);
-    if (amount.length > 0) this.setAmount(amount[0].replace(',', '.'));
+    if (amount.length > 0) this.setAmount(amount[0]);
 
     // Set the last character of the current iso code.
     this.setLastCharIsoCode(line.substring(1, amount['index']));
 
     // Set the official booking key.
-    var bookingKey = line.match(/N[0-9]{1,3}/);
+    var bookingKey = line.match(/N[a-zA-Z0-9]{1,3}/);
     if (bookingKey.length > 0) this.setBookingKey(bookingKey[0]);
 
     var reference = line.substring(bookingKey['index'] + bookingKey[0].length);
@@ -260,26 +321,79 @@ TransactionFunction.prototype.setRevenueInformation = function(line) {
   return this;
 };
 
+Transaction.prototype.reset = function() {
+  this._valuta = 0;
+  this._bookingDate = 0;
+  this._type = 0;
+  this._lastCharISOCode = '';
+  this._amount = 0;
+  this._bookingKey = '';
+  this._reference = '';
+  this._paymentReference = null;
+};
 /**
+ * Set a specific object to be the previous object in a chain.
  *
- * @param line
+ * @param previousNode {ListNode}
+ * @returns {ListNode}
  */
-TransactionFunction.prototype.setMultiPurposeInformation = function(line) {
-  line = (typeof line === 'string') ? line : null;
-
-  if (line !== null) {
-    var type = line.match(/C|D|RD|RC/ig);
-  }
-
+Transaction.prototype.setPrevious = function(previousNode) {
+  this._previous.data = previousNode;
   return this;
 };
 
-var Transaction = ring.create([TransactionFunction, linkedList.node], {});
+/**
+ * Get the previous object.
+ *
+ * @returns {ListNode}
+ */
+Transaction.prototype.previous = function() {
+  return this._previous.data;
+};
+
+/**
+ * Set a specific object to be the next in the chain.
+ *
+ * @param nextNode {ListNode}
+ * @returns {ListNode}
+ */
+Transaction.prototype.setNext = function(nextNode) {
+  this._next.data = nextNode;
+  return this;
+};
+
+/**
+ * Get the next object in the chain.
+ *
+ * @returns {ListNode}
+ */
+Transaction.prototype.next = function() {
+  return this._next.data;
+};
+
+
+/**
+ *
+ * @returns {boolean}
+ */
+Transaction.prototype.hasPrevious = function() {
+  return (this._previous.data !== null);
+};
+
+
+/**
+ *
+ * @returns {boolean}
+ */
+Transaction.prototype.hasNext = function() {
+  return (this._next.data !== null);
+};
 
 Transaction.TYPE_CREDIT = 'C';
 Transaction.TYPE_DEBIT = 'D';
 Transaction.TYPE_CREDIT_STORNO = 'RC';
 Transaction.TYPE_DEBIT_STORNO = 'RD';
+
 
 /**
  *
@@ -287,7 +401,6 @@ Transaction.TYPE_DEBIT_STORNO = 'RD';
 Transaction.instance = function() {
   return new Transaction();
 };
-
 
 
 module.exports = Transaction;

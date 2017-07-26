@@ -1,5 +1,5 @@
 var _ = require('underscore')
-  , Revenues = require('./src/Object/Revenues');
+  , Revenues = require('../object/Revenue');
 
 var Parser = function() {
   this.content = '';
@@ -14,6 +14,7 @@ Parser.prototype.setContent = function(content) {
 };
 
 Parser.prototype.hasContent = function() {
+  // does nothing.
   return true;
 };
 
@@ -27,8 +28,9 @@ Parser.prototype.loadContent = function(path) {
   return this;
 };
 
-Parser.prototype.execute = function(callback) {
+Parser.prototype.execute = function(path, callback) {
   var revenues = Revenues.instance();
+  console.log('MT940 Default Parser: No parsing of available content.');
   callback(null, revenues);
 };
 

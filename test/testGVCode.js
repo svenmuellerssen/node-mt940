@@ -7,7 +7,7 @@ var should = require('should')
 
 describe('Test gvc', function() {
   it('Test gvc completely', function(done) {
-    var gvc = GVCode.Create();
+    var gvc = GVCode.instance();
     gvc.setCode(gvcData.code);
     gvc.setText(gvcData.text);
 

@@ -1,177 +1,247 @@
-var _ = require('underscore')
+var fs = require('fs')
+  , _ = require('underscore')
   , LinkedList = require('node-linkedlist')
-  , Revenues = require('../object/Revenues')
+  , async = require('async')
+  , Revenues = require('../object/Revenue')
   , Extract = require('../object/Extract')
   , Saldo = require('../object/Saldo')
   , Transaction = require('../object/Transaction')
   , PaymentReference = require('../object/PaymentReference');
 
 var Parser = function() {
-  this.content = '' +
-  ':20:STARTUMSE' +
-  ':25:10050000/6013216264' +
-  ':28C:00000/001' +
-  ':60F:C150115EUR276,02' +
-  ':61:1501160116DR14,99N037NONREF' +
-  ':86:006?00SONSTIGER EINZUG?109208?20EC 65421206 150115184614IC5?3' +
-  '030050000?311107713?32SATURN SAGT DANKE 65421206?34011' +
-  ':61:1501160116DR50,00N004NONREF//100000155234' +
-  ':86:006?00GELDAUTOMAT?103342?2016.01/15.52UHR 650 897642?30100500' +
-  '00?32GA NR00003342 BLZ10050000 5?34003' +
-  ':62F:C150116EUR211,03' +
-  '-' +
-  ':20:STARTUMSE' +
-  ':25:10050000/6013216264' +
-  ':28C:00000/001' +
-  ':60F:C150116EUR211,03' +
-  ':61:1501190119DR20,00N033NONREF' +
-  ':86:177?00ONLINE-UEBERWEISUNG?109310?20SVWZ+Kreditkarte?21DATUM 1' +
-  '7.01.2015, 22.42 UHR?221.TAN 258749?30BELADEBEXXX?31DE83100500006' +
-  '603197900?32Sparkasse Berlin?34997' +
-  ':61:1501190119DR9,70N037NONREF' +
-  ':86:006?00SONSTIGER EINZUG?109252?20EC 55501776 150115092026IC5?3' +
-  '010090000?317109860012?32BIRKEN-APOTHEKE?34011' +
-  ':61:1501190119CR130,00N062NONREF' +
-  ':86:166?00GUTSCHRIFT?109223?20EREF+0000000006563893201501?2115020' +
-  '00000901?22SVWZ+6563893.2 BEITR-RUECKZ?23AHLG. RENTE 71259559.0 1' +
-  '30,?2400?25ABWA+Debeka Krankenversiche?26rungsverein a. G.?30MALA' +
-  'DE51KOB?31DE82570501200000071555?32Debeka Kranken-Versicherung?33' +
-  '-Verein a.G' +
-  ':62F:C150119EUR311,33' +
-  '-';
+  this.content = '';
   this.path = './';
-  this.file = '';
+  this.filename = '';
 };
 
+/**
+ *
+ * @param content
+ * @returns {Parser}
+ */
 Parser.prototype.setContent = function(content) {
   content = content || '';
   this.content = content;
   return this;
 };
 
+/**
+ *
+ * @returns {boolean}
+ */
 Parser.prototype.hasContent = function() {
   return (this.content !== "");
 };
 
+/**
+ *
+ * @param path
+ * @returns {Parser}
+ */
 Parser.prototype.setFilePath = function(path) {
-  /**
-   * todo
-   * 1. Split path and file
-   * 2. Write path
-   * 3. Write filename
-   */
-  return this;
-};
-
-Parser.prototype.loadContent = function(path) {
   path = (typeof path === 'string') ? path : null;
 
   if (path !== null) {
     this.path = path.substring(0, path.lastIndexOf("/"));
-    this.file = path.substring(path.lastIndexOf("/"));
-  }
-
-  if (this.content === '' && this.path !== '' && this.file !== '') {
-    /**
-     * todo
-     * 1. Check existence of file.
-     * 2. If not return with error message.
-     * 3. Load file contact into property this.contact.
-     * 3. If no content available in file return with error message.
-     */
+    if (this.path === '') this.path = './';
+    this.filename = path.substring(path.lastIndexOf("/") +1);
   }
 
   return this;
 };
 
-Parser.prototype.execute = function(callback) {
-  var mt940Extracts = this.content.split(/-/)
-    , revenues = Revenues.instance();
+/**
+ *
+ * @param path
+ * @param callback
+ * @returns {Parser}
+ */
+Parser.prototype.loadContent = function(path, callback) {
+  var me = this;
+  this.setFilePath(path);
 
-  if (Array.isArray(mt940Extracts) && mt940Extracts.length > 0) {
-
-    var index = 0
-      , extractText = ''
-      , extractSnippets = LinkedList.Create();
-
-    for(;index < mt940Extracts.length; index++) {
-      extractText = mt940Extracts[index];
-
-      if (extractText.length == 0) {
-        callback(null, revenues);
-      } else {
-
-        extractSnippets = extractText.split(/(:86:.*|:[0-9CcFfMm]{2,3}:.*|:61:.*)/);
-        if (extractSnippets.length > 0) {
-          var extract = Extract.instance()
-            , snippet = '';
-
-          var transaction = null;
-          for(var i= 1; i < extractSnippets.length; i++) {
-            snippet = extractSnippets[i];
-            var type = snippet.match(/(:[2-9CFcf]{2,3}:)/ig);
-
-            switch(type) {
-              case ':25:':
-                // [^:25:](.*)
-                var number = snippet.match(/[^:25:](.*)/)
-                  , numberBuffer = number.split(/\//);
-                revenues.setBankCode(numberBuffer[0]);
-                revenues.setAccountNumber(numberBuffer[1]);
-                number = null;
-                numberBuffer = null;
-                break;
-              case ':28C:':
-              case ':28c:':
-                // [^:28Cc:](.*)
-                var extractLine = snippet.match(/[^:28Cc:]([a-zA-Z0-9/].*)/)
-                  , extractNumber = extractLine.split(/\//);
-                extract.setNumber(extractNumber[0]).setSheetNumber(extractNumber[1]);
-                extractLine = null;
-                extractNumber = null;
-                break;
-              case ':60F:':
-              case ':60f:':
-                // [^:60Ff:](.*)
-                extract.setStartSaldo(
-                  Saldo.instance()
-                    .setSaldo(
-                      snippet.match(/[^:60FfMm:](.*)/),
-                      Saldo.TYPE_SALDO_END
-                    ));
-                break;
-              case ':61:':
-                transaction = Transaction.instance();
-                transaction.setRevenueInformation(snippet);
-                break;
-              case ':86:':
-                var reference = PaymentReference.instance()
-                  , information = snippet.match(/[^:86](.*)/gi);
-                reference.setMultiPurposeInformation(information);
-
-                transaction.setReference(reference);
-                extract.addTransaction(transaction, function() {});
-                break;
-              case ':62F:':
-              case ':62f:':
-                // [^:62Ff:](.*)
-                extract.setEndSaldo(
-                  Saldo.instance().setSaldo(
-                    snippet.match(/[^:62Ff:](.*)/),
-                    Saldo.TYPE_SALDO_END
-                  ));
-                break;
-            }
-          }
-
-
-          revenues.addExtract(extract, function(err, revenues) {});
-        }
+  if (this.path === '' || this.filename === '') {
+    callback({error: {message: 'Load content error: The path and/or filename is not available.', code: 0}}, null);
+  } else if (this.content !== '') {
+    callback(null, true);
+  } else {
+    fs.readFile(me.path + '/' + me.filename, 'utf-8', function(error, content) {
+      if (error) callback(error, null);
+      else {
+        me.content = content;
+        callback(null, true);
       }
-    }
+    });
   }
 
-  callback(null, revenues);
+  return this;
+};
+
+/**
+ *
+ * @param path
+ * @param callback
+ */
+Parser.prototype.execute = function(path, callback) {
+  var me = this;
+  async.auto({
+    /**
+     *
+     * @param immediateCallback
+     */
+    loadContent: function(immediateCallback) {
+      if (!me.hasContent()) {
+        me.loadContent(path, immediateCallback);
+      } else {
+        immediateCallback(null, true);
+      }
+    },
+    /**
+     *
+     * @param resultObj
+     * @param immediateCallback
+     */
+    parseContent: ['loadContent', function(resultObj, immediateCallback) {
+      if (resultObj.loadContent === true) {
+        var mt940Extracts = me.content.split(/-\r\n|-\n|-\r|-$/)
+          , revenues = Revenues.instance();
+
+        if (!Array.isArray(mt940Extracts) || mt940Extracts.length === 0) {
+          immediateCallback({error: {messge: 'Parse error: Content can not be split into single extracts.', code: 0}}, null);
+        } else {
+
+          var index = 0
+            , extractText = ''
+            , extractSnippets = null
+            //, extractSnippets = LinkedList.Create()
+            ;
+
+          mt940Extracts = _.filter(mt940Extracts, function(extract) {
+            return !(extract === '');
+          });
+
+          for(;index < mt940Extracts.length; index++) {
+            extractText = mt940Extracts[index];
+
+            extractSnippets = extractText.match(/(:[0-9CcFfMm]{2,3}:)|(.*)\r\n/g);
+            extractSnippets = _.filter(extractSnippets, function(snippet) {
+              return (snippet.replace(/\r\n/gi,'') !== '');
+            });
+
+            //console.log(extractSnippets);
+            if (extractSnippets.length === 0) {
+              immediateCallback({error: {messge: 'Parse error: Got no extract lines.', code: 0}}, null);
+            } else {
+              var extract = Extract.instance()
+                , snippet = '';
+
+              var transaction = null
+                , reference = null
+                , line = '';
+
+              for(var i=0, valueIndex=1; i < extractSnippets.length; i+=2, valueIndex+=2) {
+                snippet = extractSnippets[i];
+                snippet = snippet.replace(/\r\n/gi,'');
+
+                if (snippet == '') {
+                  i++;
+                  valueIndex++;
+                  snippet = extractSnippets[i];
+                  snippet = snippet.replace(/\r\n/gi,'');
+                }
+
+                var type = snippet.match(/(:86:)|(:[0-9CFMcfm]{2,3}:)|(:61:)/ig);
+
+                line = extractSnippets[valueIndex];
+                line = line.replace(/\r\n/gi, '');
+
+                switch(type[0]) {
+                  case ':20:':
+                    revenues.setReferenceNumber(line);
+                    break;
+                  case ':25:':
+                    // [^:25:](.*)
+                    var numberBuffer = line.split(/\//);
+                    extract.setBankCode(numberBuffer[0]);
+                    extract.setAccountNumber(numberBuffer[1]);
+                    numberBuffer = null;
+                    break;
+                  case ':28C:':
+                  case ':28c:':
+                    // [^:28Cc:](.*)
+                    var extractNumber = line.split(/\//);
+                    extract.setNumber(extractNumber[0]).setSheetNumber(extractNumber[1]);
+                    extractNumber = null;
+                    break;
+                  case ':60F:':
+                  case ':60f:':
+                  case ':60M:':
+                  case ':60m:':
+                    // [^:60FfMm:](.*)
+                    extract.setStartSaldo(
+                      Saldo.instance()
+                        .parseLine(line)
+                    );
+                    break;
+                  case ':61:':
+                    transaction = Transaction.instance();
+                    transaction.parseLine(line);
+                    break;
+                  case ':86:':
+                    if (reference === null)
+                      reference = PaymentReference.instance();
+
+                    var text = '';
+                    do {
+                      valueIndex += 1;
+                      line = line.replace(/\r\n/gi, '');
+                      text += line;
+
+                      line = extractSnippets[valueIndex];
+                      //console.log(valueIndex);
+
+                    } while (line.indexOf(":") == -1);
+                    //console.log(JSON.stringify(text));
+                    // Set reference information
+                    reference.parseLine(text);
+
+                    // Balance the loop counter.
+                    i = valueIndex-2;
+                    valueIndex -= 1;
+
+                    if (!transaction) transaction = Transaction.instance();
+
+                    //console.log(reference);
+                    transaction.setPaymentReference(reference);
+                    extract.addTransaction(transaction, function() {});
+                    break;
+                  case ':62F:':
+                  case ':62f:':
+                    // [^:62Ff:](.*)
+                    extract.setEndSaldo(
+                      Saldo.instance()
+                        .parseLine(line)
+                    );
+                    break;
+                }
+              }
+
+              revenues.addExtract(extract, function(err, revenues) {});
+            }
+          }
+          // Response the parsed revenue.
+          immediateCallback(null, revenues);
+        }
+
+      } else {
+        immediateCallback({error: {message: 'Parsing error: No content available', code: 0}}, null);
+      }
+    }]
+  }, function(error, results) {
+    if (error) callback(error, null);
+    else callback(null, results.parseContent);
+  });
+
 };
 
 

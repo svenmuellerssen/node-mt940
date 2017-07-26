@@ -1,20 +1,22 @@
 var _ = require('underscore')
   , LinkedList = require('node-linkedlist')
+  , Extract = require('./Extract')
   , ring = require('ring');
 
-var Revenues = function() {
+var Revenue = function() {
+	this.name = 'Revenue';
   this.contractReferenceNumber = '';
   this.bankCode = ''; // Field :25:1
   this.accountNumber = ''; // Field :25:2
-  this.extractList = LinkedList.Create();
+  this.extractList = LinkedList.Create(Extract);
 };
 
 /**
  *
  * @param number
- * @returns {Revenues}
+ * @returns {Revenue}
  */
-Revenues.prototype.setReferenceNumber = function(number) {
+Revenue.prototype.setReferenceNumber = function(number) {
   number = (typeof number === 'string') ? number : null;
 
   if (number !== null)
@@ -26,16 +28,16 @@ Revenues.prototype.setReferenceNumber = function(number) {
  *
  * @returns {string|*}
  */
-Revenues.prototype.getReferenceNumber = function() {
+Revenue.prototype.getReferenceNumber = function() {
   return this.contractReferenceNumber;
 };
 
 /**
  *
  * @param bankCode
- * @returns {Revenues}
+ * @returns {Revenue}
  */
-Revenues.prototype.setBankCode = function(bankCode) {
+Revenue.prototype.setBankCode = function(bankCode) {
   bankCode = (typeof bankCode === 'string') ? bankCode : null;
   if (bankCode !== null) {
     this.bankCode = bankCode;
@@ -48,17 +50,17 @@ Revenues.prototype.setBankCode = function(bankCode) {
  *
  * @returns {string}
  */
-Revenues.prototype.getBankCode = function() {
+Revenue.prototype.getBankCode = function() {
   return this.bankCode;
 };
 
 /**
  *
  * @param accountNumber
- * @returns {Revenues}
+ * @returns {Revenue}
  */
-Revenues.prototype.setAccountNumber = function(accountNumber) {
-  accountNumber = (typeof accountNumber === 'string') ? bankCode : null;
+Revenue.prototype.setAccountNumber = function(accountNumber) {
+  accountNumber = (typeof accountNumber === 'string') ? accountNumber : null;
   if (accountNumber !== null) {
     this.accountNumber = accountNumber;
   }
@@ -70,16 +72,16 @@ Revenues.prototype.setAccountNumber = function(accountNumber) {
  *
  * @returns {string}
  */
-Revenues.prototype.getAccountNumber = function() {
+Revenue.prototype.getAccountNumber = function() {
   return this.accountNumber;
 };
 
 /**
  *
  * @param extractList {node-linkedlist}
- * @returns {Revenues}
+ * @returns {Revenue}
  */
-Revenues.prototype.setExtracts = function(extractList) {
+Revenue.prototype.setExtracts = function(extractList) {
   extractList = (ring.instance(extractList, LinkedList)) ? extractList : null;
 
   if (extractList !== null)
@@ -88,22 +90,25 @@ Revenues.prototype.setExtracts = function(extractList) {
   return this;
 };
 
-Revenues.prototype.addExtract = function(extract, callback) {
-  callback(null, this);
+Revenue.prototype.addExtract = function(extract, callback) {
+  callback = (callback !== void 0 && callback !== null && typeof callback === 'function') ? callback : function(err, result) {};
+
+  this.extractList.add(extract, callback);
 };
 /**
  *
  * @returns {LinkedList}
  */
-Revenues.prototype.getExtracts = function() {
+Revenue.prototype.getExtracts = function() {
   return this.extractList;
 };
 
 /**
  *
- * @returns {Revenues}
+ * @returns {Revenue}
  */
-Revenues.instance = function() {
-  return new Revenues();
+Revenue.instance = function() {
+  return new Revenue();
 };
 
+module.exports = Revenue;

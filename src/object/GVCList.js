@@ -7,7 +7,7 @@ var GVCList = function() {
 };
 
 GVCList.prototype.createCode = function(code, text) {
-  var gvCode = GVCode.Create();
+  var gvCode = GVCode.instance();
   gvCode.setCode(code);
   gvCode.setText(text);
   return gvCode;

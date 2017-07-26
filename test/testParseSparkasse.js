@@ -1,3 +1,1 @@
-/**
- * Created by ruth on 19.09.16.
- */
+var should = require('should');

@@ -1,34 +1,75 @@
-var Revenues = require('./../object/Revenues');
+var ring = require('ring')
+  , Revenues = require('../object/Revenue')
+  , AWriter = require('./AWriter');
 
 var WriterDefault = function() {
-  this.path = null;
-  this.filename = null;
-  this.start = "";
-  this.separator = "";
+  this.name = 'WriterDefault';
+  this._path = '';
+  this._filename = '';
 };
 
+/**
+ *
+ * @param path {string}
+ * @returns {WriterDefault}
+ */
 WriterDefault.prototype.setFilePath = function(path) {
-  // do nothing.
+  path = (typeof path === 'string') ? path : null;
+
+  if (path !== null) {
+    this._path = path.substring(0, path.lastIndexOf("/"));
+    if (this._path === '') this._path = './';
+    this._filename = path.substring(path.lastIndexOf("/") +1);
+  }
+
   return this;
 };
 
+/**
+ *
+ * @param revenues {Revenue}
+ * @param callback {function}
+ */
 WriterDefault.prototype.writePlainText = function(revenues, callback) {
-  // do nothing.
-  callback(null, this);
+  var path = this._path + '/' + this._filename;
+  writeToFile("MT940 Default Writer: Nothing to write to path '" + path + "'", path, callback);
 };
 
+/**
+ *
+ * @param revenues {Revenue}
+ * @param callback {function}
+ */
 WriterDefault.prototype.writeXML = function(revenues, callback) {
-  // do nothing.
-  callback(null, this);
+  var path = this._path + '/' + this._filename;
+  writeToFile("MT940 Default Writer: Nothing to write to path '" + path + "'", path, callback);
 };
 
+/**
+ *
+ * @param revenues {Revenue}
+ * @param callback {function}
+ */
 WriterDefault.prototype.writeCSV = function(revenues, callback) {
-  // do nothing.
-  callback(null, this);
+  var path = this._path + '/' + this._filename;
+  writeToFile("MT940 Default Writer: Nothing to write to path '" + path + "'", path, callback);
 };
 
-WriterDefault.instance = function() {
-  return new WriterDefault();
+/**
+ *
+ * @param text {string}
+ * @param path {string}
+ * @param callback {function}
+ */
+var writeToFile = function(text, path, callback) {
+  var me = this;
+  callback(null, me);
 };
 
-module.exports = WriterDefault;
+var Writer = ring.create([WriterDefault, AWriter], {});
+
+Writer.instance = function() {
+  return new Writer();
+};
+
+module.exports = Writer;

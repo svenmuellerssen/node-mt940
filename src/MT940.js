@@ -1,92 +1,157 @@
-var Revenues = require('./object/Revenues')
+var Revenues = require('./object/Revenue')
   , _instance = null
   , AWriter = require('./writer/AWriter');
 
 
 var MT940 = function(configuration) {
-  this.parser = null;
-  this.writer = null;
-  this.writeAs = 1;
+  this._configuration = null;
+  this._parser = null;
+  this._writer = null;
+  this._writeAs = 1;
+  this._pathToWrite = '';
+  this._pathToContent = '';
 
-  this.parseConfiguration(configuration);
+  this.setConfiguration(configuration);
 };
 
-MT940.PARSER_NONE = 0;
+MT940.PARSER_DEFAULT = 0;
 MT940.PARSER_SPARKASSE = 1;
 
-MT940.WRITER_NONE = 0;
+MT940.WRITER_DEFAULT = 0;
 MT940.WRITER_SPARKASSE = 1;
 
+/**
+ *
+ * @returns {string}
+ */
+MT940.prototype.getWriteStatus = function() {
+  if (this._writer !== null) return this._writer.getStatus();
+  return '';
+};
+
+/**
+ *
+ * @param parser
+ * @returns {MT940}
+ */
 MT940.prototype.setParser = function(parser) {
   switch (parser) {
-    case MT940.PARSER_NONE:
-      this.parser = require('./parser/Default').instance();
+    case MT940.PARSER_DEFAULT:
+      this._parser = require('./parser/Default').instance();
       break;
     case MT940.PARSER_SPARKASSE:
-      this.parser = require('./parser/Sparkasse').instance();
+      this._parser = require('./parser/Sparkasse').instance();
+      break;
+    default:
+      this._parser = null;
       break;
   }
+
+  if (this._parser !== null) this._parser.setFilePath(this._pathToContent);
+
+  return this;
 };
 
+/**
+ *
+ * @param writer
+ * @returns {MT940}
+ */
 MT940.prototype.setWriter = function(writer) {
   switch (writer) {
-    case MT940.PARSER_NONE:
-      this.writer = require('./writer/Default').instance();
+    case MT940.WRITER_DEFAULT:
+      this._writer = require('./writer/Default').instance();
       break;
-    case MT940.PARSER_SPARKASSE:
-      this.writer = require('./writer/Sparkasse').instance();
+    case MT940.WRITER_SPARKASSE:
+      this._writer = require('./writer/Sparkasse').instance();
       break;
   }
+
+  if (this._writer !== null) this._writer.setFilePath(this._pathToWrite);
+  return this;
 };
 
-MT940.prototype.writeAs = function(writeAs) {
+/**
+ *
+ * @param writeAs
+ * @returns {MT940}
+ */
+MT940.prototype.setWriteAs = function(writeAs) {
   switch(writeAs) {
-    case MT940.WRITE_PLAIN_TEXT:
-    case MT940.WRITE_XML:
-    case MT940.WRITE_CSV:
-      this.writeAs = writeAs;
+    case AWriter.WRITE_PLAIN_TEXT:
+    case AWriter.WRITE_XML:
+    case AWriter.WRITE_CSV:
+      this._writeAs = writeAs;
       break;
   }
 
   return this;
 };
 
+/**
+ *
+ * @param callback
+ */
 MT940.prototype.parse = function(callback) {
-  if (this.parser.hasContent())
-    this.parser.execute(callback);
-  else
-    callback(null, Revenues.instance());
+  this._parser.execute(null, callback);
 };
 
+/**
+ *
+ * @param revenues
+ * @param callback
+ */
 MT940.prototype.write = function(revenues, callback) {
-  switch(this.writeAs) {
-    case MT940.WRITE_PLAIN_TEXT:
-      this.writer.writePlainText(revenues, callback);
+  var me = this
+	  , writerCallback = function(err, writerObj) {
+    callback(err, me);
+  };
+
+  switch(this._writeAs) {
+    case AWriter.WRITE_PLAIN_TEXT:
+      this._writer.writePlainText(revenues, writerCallback);
       break;
-    case MT940.WRITE_XML:
-      this.writer.writeXML(revenues, callback);
+    case AWriter.WRITE_XML:
+      this._writer.writeXML(revenues, writerCallback);
       break;
-    case MT940.WRITE_CSV:
-      this.writer.writeCSV(revenues, callback);
+    case AWriter.WRITE_CSV:
+      this._writer.writeCSV(revenues, writerCallback);
       break;
   }
 };
 
-MT940.prototype.parseConfiguration = function(configuration) {
-  configuration = configuration || {
-      parser: MT940.PARSER_NONE,
-      writer: MT940.WRITER_NONE,
+/**
+ *
+ * @param configuration
+ * @returns {MT940}
+ */
+MT940.prototype.setConfiguration = function(configuration) {
+	this._configuration = configuration || {
+      parser: MT940.PARSER_DEFAULT,
+      writer: MT940.WRITER_DEFAULT,
       pathToContent: '',
       writeAs: AWriter.WRITE_PLAIN_TEXT,
+      pathToWrite: '',
       gvcData: []
     };
 
-  this.setParser(configuration.parser);
-  this.setWriter(configuration.writer);
-  this.parser.setFilePath(configuration.path);
-  this.writer.writeAs(configuration.writeAs);
+  this.setParser(this._configuration.parser);
+  this._pathToContent = this._configuration.pathToContent;
+  this._parser.setFilePath(this._pathToContent);
+
+  this.setWriter(this._configuration.writer);
+  this._pathToWrite = this._configuration.pathToWrite;
+  this._writer.setFilePath(this._configuration.pathToWrite);
+  this.setWriteAs(this._configuration.writeAs);
+
+  return this;
 };
 
+/**
+ *
+ * @param configuration
+ * @returns {*}
+ */
 MT940.singleton = function(configuration) {
   if (_instance === null) _instance = new MT940(configuration);
   return _instance;
