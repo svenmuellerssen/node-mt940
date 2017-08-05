@@ -1,12 +1,10 @@
 {
   "name": "node-mt940",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Module that parses MT940 files and provides transaction information as object.",
   "main": "index.js",
   "scripts": {
-    "test": [
-
-    ]
+    "test": []
   },
   "dependencies": {
     "underscore": "1.6.0",
