@@ -20,18 +20,37 @@ MT940.PARSER_SPARKASSE = 1;
 MT940.WRITER_DEFAULT = 0;
 MT940.WRITER_SPARKASSE = 1;
 
+
 /**
  *
- * @returns {string}
+ * @param configuration  {object}
+ * @returns {MT940}
  */
-MT940.prototype.getWriteStatus = function() {
-  if (this._writer !== null) return this._writer.getStatus();
-  return '';
+MT940.prototype.setConfiguration = function(configuration) {
+    this._configuration = configuration || {
+        parser: MT940.PARSER_DEFAULT,
+        writer: MT940.WRITER_DEFAULT,
+        pathToContent: '',
+        writeAs: AWriter.WRITE_PLAIN_TEXT,
+        pathToWrite: '',
+        gvcData: []
+    };
+
+    this.setParser(this._configuration.parser);
+    this._pathToContent = this._configuration.pathToContent;
+    this._parser.setFilePath(this._pathToContent);
+
+    this.setWriter(this._configuration.writer);
+    this._pathToWrite = this._configuration.pathToWrite;
+    this._writer.setFilePath(this._configuration.pathToWrite);
+    this.setWriteAs(this._configuration.writeAs);
+
+    return this;
 };
 
 /**
  *
- * @param parser
+ * @param parser {number}
  * @returns {MT940}
  */
 MT940.prototype.setParser = function(parser) {
@@ -54,7 +73,7 @@ MT940.prototype.setParser = function(parser) {
 
 /**
  *
- * @param writer
+ * @param writer {number}
  * @returns {MT940}
  */
 MT940.prototype.setWriter = function(writer) {
@@ -73,15 +92,15 @@ MT940.prototype.setWriter = function(writer) {
 
 /**
  *
- * @param writeAs
+ * @param format {number}
  * @returns {MT940}
  */
-MT940.prototype.setWriteAs = function(writeAs) {
-  switch(writeAs) {
+MT940.prototype.setWriteAs = function(format) {
+  switch(format) {
     case AWriter.WRITE_PLAIN_TEXT:
     case AWriter.WRITE_XML:
     case AWriter.WRITE_CSV:
-      this._writeAs = writeAs;
+      this._writeAs = format;
       break;
   }
 
@@ -90,7 +109,7 @@ MT940.prototype.setWriteAs = function(writeAs) {
 
 /**
  *
- * @param callback
+ * @param callback  {function}
  */
 MT940.prototype.parse = function(callback) {
   this._parser.execute(null, callback);
@@ -98,12 +117,12 @@ MT940.prototype.parse = function(callback) {
 
 /**
  *
- * @param revenues
- * @param callback
+ * @param revenues {Revenues}
+ * @param callback {function}
  */
 MT940.prototype.write = function(revenues, callback) {
   var me = this
-	  , writerCallback = function(err, writerObj) {
+	  , writerCallback = function(err, writerObj) { 
     callback(err, me);
   };
 
@@ -122,29 +141,11 @@ MT940.prototype.write = function(revenues, callback) {
 
 /**
  *
- * @param configuration
- * @returns {MT940}
+ * @returns {string}
  */
-MT940.prototype.setConfiguration = function(configuration) {
-	this._configuration = configuration || {
-      parser: MT940.PARSER_DEFAULT,
-      writer: MT940.WRITER_DEFAULT,
-      pathToContent: '',
-      writeAs: AWriter.WRITE_PLAIN_TEXT,
-      pathToWrite: '',
-      gvcData: []
-    };
-
-  this.setParser(this._configuration.parser);
-  this._pathToContent = this._configuration.pathToContent;
-  this._parser.setFilePath(this._pathToContent);
-
-  this.setWriter(this._configuration.writer);
-  this._pathToWrite = this._configuration.pathToWrite;
-  this._writer.setFilePath(this._configuration.pathToWrite);
-  this.setWriteAs(this._configuration.writeAs);
-
-  return this;
+MT940.prototype.getWriteStatus = function() {
+    if (this._writer !== null) return this._writer.getStatus();
+    return '';
 };
 
 /**
