@@ -366,6 +366,7 @@ var mt940 = require("neo4jquery").singleton().setConfiguration({
 ```
 
 <a name="setParser-method" />
+
 **setParser(parser)**
 
 Sets the parser that has to be used on parsing transactions.
@@ -390,7 +391,8 @@ mt940.setParser(MT940.PARSER_SPARKASSE);
 ```
 
 <a name="setWriter-method" />
-## setWriter(writer)
+
+**setWriter(writer)**
 
 Sets the writer that has to be used on writing back bank account transactions.
 The target path from configuration will be set to the writer automatically after instantiating.
@@ -414,7 +416,8 @@ mt940.setWriter(MT940.WRITER_SPARKASSE);
 ```
 
 <a name="setWriteAs-method" />
-## setWriteAs(writeAs)
+
+**setWriteAs(writeAs)**
 
 Configure the format in which to write bank account transactions.
 
@@ -437,7 +440,8 @@ mt940.setWriteAs(AWriter.WRITE_PLAIN_TEXT);
 ```
 
 <a name="parse-method" />
-## parse(callback)
+
+**parse(callback)**
 
 Configure the format in which to write bank account transactions.
 
@@ -463,7 +467,8 @@ mt940
 ```
 
 <a name="write-method" />
-## write(revenues, callback)
+
+**write(revenues, callback)**
 
 Configure the format in which to write bank account transactions.
 
@@ -490,7 +495,8 @@ mt940
 ```
 
 <a name="getWriteStatus-method" />
-## getWriteStatus()
+
+**getWriteStatus()**
 
 Get the status while writing the transactions into file.
 Available status are:
