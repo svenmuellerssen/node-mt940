@@ -319,7 +319,7 @@ var mt940 = require("neo4jquery")({
 ```
 
 <a name="singleton-method" />
-## singleton(configuration)
+**singleton(configuration)**
 
 Get a single MT940 object.
 
@@ -342,7 +342,7 @@ var mt940 = require("neo4jquery").singleton({
 
 <a name="setConfiguration-method" />
 
-## setConfiguration(configuration)
+**setConfiguration(configuration)**
 
 Set a configuration.
 
@@ -364,7 +364,7 @@ var mt940 = require("neo4jquery").singleton().setConfiguration({
 ```
 
 <a name="setParser-method" />
-## setParser(parser)
+**setParser(parser)**
 
 Sets the parser that has to be used on parsing transactions.
 The content path from configuration will be set to the parser automatically after instantiating.
