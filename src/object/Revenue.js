@@ -4,7 +4,7 @@ var _ = require('underscore')
   , ring = require('ring');
 
 var Revenue = function() {
-	this.name = 'Revenue';
+  this.name = 'Revenue';
   this.contractReferenceNumber = '';
   this.bankCode = ''; // Field :25:1
   this.accountNumber = ''; // Field :25:2
@@ -78,7 +78,7 @@ Revenue.prototype.getAccountNumber = function() {
 
 /**
  *
- * @param extractList {node-linkedlist}
+ * @param extractList {LinkedList}
  * @returns {Revenue}
  */
 Revenue.prototype.setExtracts = function(extractList) {
@@ -90,6 +90,11 @@ Revenue.prototype.setExtracts = function(extractList) {
   return this;
 };
 
+/**
+ *
+ * @param extract
+ * @param callback
+ */
 Revenue.prototype.addExtract = function(extract, callback) {
   callback = (callback !== void 0 && callback !== null && typeof callback === 'function') ? callback : function(err, result) {};
 

@@ -168,10 +168,15 @@ Transaction.prototype.getValutaAsTimestamp = function() {
   return this._valuta.getTime();
 };
 
+/**
+ *
+ * @returns {number}
+ */
 Transaction.prototype.getFormattedValuta = function() {
   var valuta = new Date(this.getValutaAsTimestamp());
   return valuta.getMonth() + valuta.getDay();
 };
+
 /**
  * Get the booking date of the transaction.
  *

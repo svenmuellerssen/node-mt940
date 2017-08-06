@@ -11,6 +11,12 @@ var PaymentReference = function() {
   this._textKeyAddition = '';
 };
 
+/**
+ *
+ * @param gvc
+ * @param check
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setGVC = function(gvc, check) {
   gvc = (typeof parseInt(gvc) === 'number') ? gvc : null;
   check = (check === true);
@@ -32,82 +38,154 @@ PaymentReference.prototype.setGVC = function(gvc, check) {
   return this;
 };
 
+/**
+ *
+ * @returns {*}
+ */
 PaymentReference.prototype.getGVC = function() {
   return this.pad(this._gvc, 3);
 };
 
+/**
+ *
+ * @param text
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setBookingText = function(text) {
   text = (typeof text === 'string') ? text : null;
   if (text !== null) this._bookingText = text;
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 PaymentReference.prototype.getBookingText = function() {
   return this._bookingText;
 };
 
+/**
+ *
+ * @param number
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setPrimanotaNumber = function(number) {
   number = (typeof parseInt(number) === 'number') ? parseInt(number) : null;
   if (number !== null) this._primanotaNumber = number;
   return this;
 };
 
+/**
+ *
+ * @returns {number}
+ */
 PaymentReference.prototype.getPrimanotaNumber = function() {
   return this._primanotaNumber;
 };
 
+/**
+ *
+ * @param text
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setText = function(text) {
   text = (typeof text === 'string') ? text : null;
   if (text !== null) this._text = text;
   return this;
 };
 
+/**
+ *
+ * @param text
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.addText = function(text) {
   text = (typeof text === 'string') ? text : null;
   if (text !== null) this._text += text;
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 PaymentReference.prototype.getText = function() {
   return this._text;
 };
 
+/**
+ *
+ * @param bic
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setPurchaserBIC = function(bic) {
   bic = (typeof bic === 'string') ? bic : null;
   if (bic !== null) this._bicPurchaser = bic;
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 PaymentReference.prototype.getPurchaserBIC = function() {
   return this._bicPurchaser;
 };
 
+/**
+ *
+ * @param accountNumber
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setPurchaserAccountNumber = function(accountNumber) {
   accountNumber = (typeof accountNumber === 'string') ? accountNumber : null;
   if (accountNumber !== null) this._accountNumberPurchaser = accountNumber;
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 PaymentReference.prototype.getPurchaserAccountNumber = function() {
   return this._accountNumberPurchaser;
 };
 
+/**
+ *
+ * @param name
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setAccountOwnerName = function(name) {
   name = (typeof name === 'string') ? name : null;
   if (name !== null) this._accountOwnerName = name;
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 PaymentReference.prototype.getAccountOwnerName = function() {
   return this._accountOwnerName;
 };
 
+/**
+ *
+ * @param keyAddition
+ * @returns {PaymentReference}
+ */
 PaymentReference.prototype.setTextKeyAddition = function(keyAddition) {
   keyAddition = (typeof keyAddition === 'string') ? keyAddition : null;
   if (keyAddition !== null) this._textKeyAddition = keyAddition;
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 PaymentReference.prototype.getTextKeyAddition = function() {
   return this._textKeyAddition;
 };
@@ -179,12 +257,22 @@ PaymentReference.prototype.parseLine = function(line) {
   return this;
 };
 
+/**
+ *
+ * @param string
+ * @param size
+ * @returns {string|*}
+ */
 PaymentReference.prototype.pad = function(string, size) {
 	var s = String(string);
 	while (s.length < (size || 2)) {s = "0" + s;}
 	return s;
 };
 
+/**
+ *
+ * @returns {PaymentReference}
+ */
 PaymentReference.instance = function() {
   return new PaymentReference();
 };

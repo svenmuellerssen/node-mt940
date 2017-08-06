@@ -59,6 +59,12 @@ Extract.prototype.setAccountNumber = function(accountNumber) {
 Extract.prototype.getAccountNumber = function() {
   return this.accountNumber;
 };
+
+/**
+ *
+ * @param number
+ * @returns {Extract}
+ */
 Extract.prototype.setNumber = function(number) {
   number = (typeof number === 'string') ? number : null;
   if (number !== null)
@@ -66,10 +72,19 @@ Extract.prototype.setNumber = function(number) {
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 Extract.prototype.getNumber = function() {
   return this.number;
 };
 
+/**
+ *
+ * @param number
+ * @returns {Extract}
+ */
 Extract.prototype.setSheetNumber = function(number) {
   number = (typeof number === 'string') ? number : null;
   if (number !== null)
@@ -77,10 +92,20 @@ Extract.prototype.setSheetNumber = function(number) {
   return this;
 };
 
+/**
+ *
+ * @returns {number}
+ */
 Extract.prototype.getSheetNumber = function() {
   return this.sheetNumber;
 };
 
+/**
+ *
+ * @param transaction
+ * @param callback
+ * @returns {Extract}
+ */
 Extract.prototype.addTransaction = function(transaction, callback) {
 
   callback = (callback !== void 0 && callback !== null && typeof callback === 'function') ? callback : function(err, result) {};
@@ -104,10 +129,19 @@ Extract.prototype.getTransactionById = function(id, callback) {
   return transaction;
 };
 
+/**
+ *
+ * @returns {*}
+ */
 Extract.prototype.getTransactions = function() {
   return this.transactions;
 };
 
+/**
+ *
+ * @param saldo
+ * @returns {Extract}
+ */
 Extract.prototype.setStartSaldo = function(saldo) {
   if (ring.instance(saldo, Saldo) === true) {
     this.saldoStart = saldo;
@@ -115,10 +149,19 @@ Extract.prototype.setStartSaldo = function(saldo) {
   return this;
 };
 
+/**
+ *
+ * @returns {null|*}
+ */
 Extract.prototype.getStartSaldo = function() {
   return this.saldoStart;
 };
 
+/**
+ *
+ * @param saldo
+ * @returns {Extract}
+ */
 Extract.prototype.setEndSaldo = function(saldo) {
   if (ring.instance(saldo, Saldo) === true) {
     this.saldoEnd = saldo;
@@ -126,10 +169,19 @@ Extract.prototype.setEndSaldo = function(saldo) {
   return this;
 };
 
+/**
+ *
+ * @returns {null|*}
+ */
 Extract.prototype.getEndSaldo = function() {
   return this.saldoEnd;
 };
 
+/**
+ *
+ * @param line
+ * @returns {Extract}
+ */
 Extract.prototype.parseLine = function(line) {
   line = (typeof line === 'string' && line !== '') ? line : null;
 
@@ -143,6 +195,10 @@ Extract.prototype.parseLine = function(line) {
   return this;
 };
 
+/**
+ *
+ * @returns {string}
+ */
 Extract.prototype.toCSVString = function() {
   var me = this
     , csv = '';
@@ -168,6 +224,7 @@ Extract.prototype.toCSVString = function() {
     return csv;
   }
 };
+
 /**
  * Set a specific object to be the previous object in a chain.
  *
@@ -208,7 +265,6 @@ Extract.prototype.next = function() {
   return this._next.data;
 };
 
-
 /**
  *
  * @returns {boolean}
@@ -226,6 +282,10 @@ Extract.prototype.hasNext = function() {
   return (this._next.data !== null);
 };
 
+/**
+ *
+ * @returns {Extract}
+ */
 Extract.instance = function() {
   return new Extract();
 };
