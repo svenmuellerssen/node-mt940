@@ -1,5 +1,5 @@
 # MT940
-This module parses files with bank account transactions in format MT940. 
+This module parses files with bank account transactions in format MT940.
 
 # Documentation
 
@@ -9,7 +9,7 @@ This module parses files with bank account transactions in format MT940.
   npm install --save node-mt940
 ```
 
-##MT940
+## MT940
 
 [constructor](#constructor-method) - --
 
@@ -29,7 +29,7 @@ This module parses files with bank account transactions in format MT940.
 
 [getWriteStatus](#get-write-status-method) - Get the current status of writing
 
-##Parser
+## Parser
 [instance](#parser-instance-method) - Get a new parser instance
 
 [setContent](#set-content-method) - Set the content to parse
@@ -42,7 +42,7 @@ This module parses files with bank account transactions in format MT940.
 
 [execute](#execute-method) - Execute parsing file or set content
 
-##Writer
+## Writer
 [instance](#writer-instance-method) - Get a new writer instance
 
 [setFilePath](#set-writer-file-path-method) - Set path write transaction to file
@@ -53,7 +53,7 @@ This module parses files with bank account transactions in format MT940.
 
 [writeCSV](#write-csv-method) - Write transactions in CSV format
 
-##Revenue
+## Revenue
 [instance](#revenue-instance-method) - Get a new revenue object
 
 [setReferenceNumber](#set-reference-number-method) - Set the reference number
