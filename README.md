@@ -295,6 +295,7 @@ This module parses files with bank account transactions in format MT940.
 
 
 # MT940
+
 <a name="constructor-method" />
 ## constructor(configuration)
 
@@ -316,6 +317,7 @@ var mt940 = require("neo4jquery")({
     gvcData: []
 });
 ```
+
 <a name="singleton-method" />
 ## singleton(configuration)
 
@@ -337,6 +339,7 @@ var mt940 = require("neo4jquery").singleton({
     gvcData: []
 });
 ```
+
 <a name="setConfiguration-method" />
 ## setConfiguration(configuration)
 
@@ -358,6 +361,7 @@ var mt940 = require("neo4jquery").singleton().setConfiguration({
     gvcData: []
 });
 ```
+
 <a name="setParser-method" />
 ## setParser(parser)
 
@@ -381,6 +385,7 @@ var mt940 = require("neo4jquery").singleton({
 
 mt940.setParser(MT940.PARSER_SPARKASSE);
 ```
+
 <a name="setWriter-method" />
 ## setWriter(writer)
 
@@ -404,6 +409,7 @@ var mt940 = require("neo4jquery").singleton({
 
 mt940.setWriter(MT940.WRITER_SPARKASSE);
 ```
+
 <a name="setWriteAs-method" />
 ## setWriteAs(writeAs)
 
@@ -426,6 +432,7 @@ var mt940 = require("neo4jquery").singleton({
 
 mt940.setWriteAs(AWriter.WRITE_PLAIN_TEXT);
 ```
+
 <a name="parse-method" />
 ## parse(callback)
 
@@ -451,6 +458,7 @@ mt940
         // Get back error and revenue object.
     });
 ```
+
 <a name="write-method" />
 ## write(revenues, callback)
 
@@ -477,6 +485,7 @@ mt940
         // Do some important stuff.
     });
 ```
+
 <a name="getWriteStatus-method" />
 ## getWriteStatus()
 
@@ -513,6 +522,7 @@ mt940
         console.log('.');
     }
 ```
+
 # Parser
 
 # Writer
