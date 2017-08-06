@@ -341,6 +341,7 @@ var mt940 = require("neo4jquery").singleton({
 ```
 
 <a name="setConfiguration-method" />
+
 ## setConfiguration(configuration)
 
 Set a configuration.
