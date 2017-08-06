@@ -297,7 +297,8 @@ This module parses files with bank account transactions in format MT940.
 # MT940
 
 <a name="constructor-method" />
-## constructor(configuration)
+
+**constructor(configuration)**
 
 Instantiate a MT940 object.
 
@@ -319,6 +320,7 @@ var mt940 = require("neo4jquery")({
 ```
 
 <a name="singleton-method" />
+
 **singleton(configuration)**
 
 Get a single MT940 object.
