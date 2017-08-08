@@ -61,7 +61,7 @@ Parser.prototype.loadContent = function(path, callback) {
   this.setFilePath(path);
 
   if (this.path === '' || this.filename === '') {
-    callback({error: {message: 'Load content error: The path and/or filename is not available.', code: 0}}, null);
+    callback({error: {message: 'The path and/or filename is not available.', code: 0}}, null);
   } else if (this.content !== '') {
     callback(null, true);
   } else {
@@ -112,9 +112,7 @@ Parser.prototype.execute = function(path, callback) {
 
           var index = 0
             , extractText = ''
-            , extractSnippets = null
-            //, extractSnippets = LinkedList.Create()
-            ;
+            , extractSnippets = null;
 
           mt940Extracts = _.filter(mt940Extracts, function(extract) {
             return !(extract === '');
