@@ -90,6 +90,7 @@ Saldo.prototype.getFormattedBookingDate = function() {
   var bookingDate = new Date(this.getBookingDateAsTimestamp());
   return (bookingDate.getFullYear() + '' + this.pad(bookingDate.getMonth() + 1, 2) + '' + this.pad(bookingDate.getDate(), 2)).substr(2);
 };
+
 /**
  *
  * @param currency
@@ -153,11 +154,18 @@ Saldo.prototype.parseLine = function(line) {
   return this;
 };
 
+/**
+ * Pad a given string to the given size of characters.
+ * @param string
+ * @param size
+ * @returns {string}
+ */
 Saldo.prototype.pad = function(string, size) {
 	var s = String(string);
 	while (s.length < (size || 2)) {s = "0" + s;}
 	return s;
 };
+
 /**
  *
  * @returns {Saldo}

@@ -304,11 +304,11 @@ This module parses files with bank account transactions in format MT940.
 
 Instantiate a MT940 object.
 
-___Argument___
+___Arguments___
 
 * `configuration` (object) - Basic configuration to parse and write bank account transactions in MT940 format.
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery")({
@@ -327,11 +327,11 @@ var mt940 = require("neo4jquery")({
 
 Get a single MT940 object.
 
-___Argument___
+___Arguments___
 
 * `configuration` (object) - Basic configuration to parse and write bank account transactions in MT940 format.
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton({
@@ -350,11 +350,11 @@ var mt940 = require("neo4jquery").singleton({
 
 Set a configuration.
 
-___Argument___
+___Arguments___
 
 * `configuration` (object) - Set basic configuration to parse and write bank account transactions in MT940 format.
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton().setConfiguration({
@@ -374,11 +374,11 @@ var mt940 = require("neo4jquery").singleton().setConfiguration({
 Sets the parser that has to be used on parsing transactions.
 The content path from configuration will be set to the parser automatically after instantiating.
 
-___Argument___
+___Arguments___
 
 * `parser` (number) - Selected parser number
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton({
@@ -399,11 +399,11 @@ mt940.setParser(MT940.PARSER_SPARKASSE);
 Sets the writer that has to be used on writing back bank account transactions.
 The target path from configuration will be set to the writer automatically after instantiating.
 
-___Argument___
+___Arguments___
 
 * `writer` (number) - Selected writer number
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton({
@@ -423,11 +423,11 @@ mt940.setWriter(MT940.WRITER_SPARKASSE);
 
 Configure the format in which to write bank account transactions.
 
-___Argument___
+___Arguments___
 
 * `writeAs` (number) - Selected write format
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton({
@@ -447,11 +447,11 @@ mt940.setWriteAs(AWriter.WRITE_PLAIN_TEXT);
 
 Configure the format in which to write bank account transactions.
 
-___Argument___
+___Arguments___
 
 * `callback` (function) - Function called when parsing finishes.
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton({
@@ -474,12 +474,12 @@ mt940
 
 Configure the format in which to write bank account transactions.
 
-___Argument___
+___Arguments___
 
 * `revenues` (Revenues) - All parsed transactions as revenue object.
 * `callback` (function) - Function called when parsing finishes.
 
-__Example__
+___Example___
 
 ```js
 var mt940 = require("neo4jquery").singleton({
@@ -509,10 +509,11 @@ Available status are:
 
 Later they will trigger events.
 
-___Argument___
+___Arguments___
 
+No arguments.
 
-__Example__
+___Example___
 
 
 ```js
@@ -547,11 +548,11 @@ All defined lines of the content will be converted into well defined objects lik
 
 Set the content in MT940 format.
 
-___Argument___
+___Arguments___
 
 * `content` (string) - Complete content that is in MT940 format and has to be parsed.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/parser/<name>.js").instance();
@@ -567,9 +568,11 @@ parser.setContent('...');
 
 Check if parser has content to parse.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/parser/<name>.js").instance();
@@ -588,11 +591,11 @@ parser.hasContent();
 
 Set the file path with the MT940 content.
 
-___Argument___
+___Arguments___
 
 * `path` (string) - Path to the file with MT940 content.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/parser/<name>.js").instance();
@@ -608,14 +611,14 @@ parser.setFilePath('...');
 
 Load the content of configured file path.
 
-___Argument___
+___Arguments___
 
 * `path` (string) - Path to the file with MT940 content.
 * `callback` (function) - Callback function that provides two object: 
   - `error`: Will be set when an error occured. Default is _null_.
   - `success`: Will be true when loading was successful. Otherwise it is _null_ and an error is set.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/parser/<name>.js").instance();
@@ -632,14 +635,14 @@ parser.loadContent('...', function(error, success) {
 
 Execute parsing file or set content.
 
-___Argument___
+___Arguments___
 
 * `path` (string) - Path to the file with MT940 content.
 * `callback` (function) - Callback function that provides two object: 
   - `error`: Will be set when an error occured. Default is _null_.
   - `revenues`: A revenue object with converted content information.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/parser/<name>.js").instance();
@@ -658,9 +661,11 @@ parser.execute('...', function(error, revenues) {
 
 Get a new writer instance.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var writer = require("<node_modules>/node-mt940/src/writer/<name>.js").instance();
@@ -674,11 +679,11 @@ var writer = require("<node_modules>/node-mt940/src/writer/<name>.js").instance(
 
 Set path to write MT940 statements to file.
 
-___Argument___
+___Arguments___
 
 * `path` (string) - Path to the file.
 
-__Example__
+___Example___
 
 ```js
 var writer = require("<node_modules>/node-mt940/src/writer/<name>.js").instance();
@@ -693,14 +698,14 @@ writer.setFilePath('...');
 
 Write transactions in MT940 plain text format
 
-___Argument___
+___Arguments___
 
 * `revenues` (string) - Path to the file with MT940 content.
 * `callback` (function) - Callback function that provides two object: 
   - `error`: Will be set when an error occured. Default is _null_.
   - `writerObj`: A revenue object with converted content information.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/writer/<name>.js").instance();
@@ -718,14 +723,14 @@ writer.writePlainText(revenues, function(error, writerObj) {
 
 Write transactions in MT940 XML format.
 
-___Argument___
+___Arguments___
 
 * `revenues` (string) - Path to the file with MT940 content.
 * `callback` (function) - Callback function that provides two object: 
   - `error`: Will be set when an error occured. Default is _null_.
   - `writerObj`: A revenue object with converted content information.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/writer/<name>.js").instance();
@@ -743,14 +748,14 @@ writer.writeXML(revenues, function(error, writerObj) {
 
 Write statements in MT940 in CSV format.
 
-___Argument___
+___Arguments___
 
 * `revenues` (string) - Path to the file with MT940 content.
 * `callback` (function) - Callback function that provides two object: 
   - `error`: Will be set when an error occured. Default is _null_.
   - `writerObj`: A revenue object with converted content information.
 
-__Example__
+___Example___
 
 ```js
 var parser = require("<node_modules>/node-mt940/src/writer/<name>.js").instance();
@@ -771,9 +776,11 @@ writer.writeCSV(revenues, function(error, writerObj) {
 
 Get a new revenue object.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance();
@@ -787,11 +794,11 @@ var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instanc
 
 Set the revenue reference number.
 
-___Argument___
+___Arguments___
 
 * `number` (string) - The reference number.
 
-__Example__
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance();
@@ -806,9 +813,11 @@ revenue.setReferenceNumber('...');
 
 Get the revenue reference number.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance().setReferenceNumber('...')
@@ -823,11 +832,11 @@ var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instanc
 
 Set bank code of account.
 
-___Argument___
+___Arguments___
 
 * `bankCode` (string) - The code to be set.
 
-__Example__
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance();
@@ -842,9 +851,11 @@ revenue.setBankCode('...');
 
 Get bank code of account.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance().setBankCode('...')
@@ -859,11 +870,11 @@ var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instanc
 
 Set the bank account number.
 
-___Argument___
+___Arguments___
 
 * `accountNumber` (string) - The bank account number.
 
-__Example__
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance();
@@ -878,9 +889,11 @@ revenue.setAccountNumber('...');
 
 Get the bank account number.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instance().setAccountNumber('...')
@@ -895,11 +908,11 @@ var revenue = require("<node_modules>/node-mt940/src/object/Revenue.js").instanc
 
 Set collection of extracts (single statement block).
 
-___Argument___
+___Arguments___
 
 * `extractList` (LinkedList) - A list with all parsed MT940 statement objects.
 
-__Example__
+___Example___
 
 ```js
 var LinkedList = require('node-linkedlist')
@@ -920,14 +933,14 @@ revenue.setExtracts(statements);
 
 Add single extract to extract collection.
 
-___Argument___
+___Arguments___
 
 * `extractList` (LinkedList) - A list with all parsed MT940 statement objects.
 * `callback` (function) - Callback function that provides two object: 
   - `error`: Will be set when an error occured. Default is _null_.
   - `extractList`: The linked list with all available statements added to it.
 
-__Example__
+___Example___
 
 ```js
 var LinkedList = require('node-linkedlist')
@@ -950,9 +963,11 @@ revenue.addExtract(extract, function(error, statementList) {
 
 Get collection of extracts.
 
-___Argument___
+___Arguments___
 
-__Example__
+No arguments.
+
+___Example___
 
 ```js
 var LinkedList = require('node-linkedlist')
@@ -1120,64 +1135,437 @@ var statementList = revenue.getExtracts();
 
 [getTextKeyAddition](#payment-reference-get-text-key-addition-method) - Get the text key addition
 
-[parseLine](#payment-reference-parse-line-method) - Parse a given line of MT940 content
+<a name="payment-reference-parse-line-method" />
 
-[pad](#payment-reference-pad-method) - Pads a string with "0" to given size
+**parseLine(line)**
+
+Parse a given line of MT940 content.
+
+___Arguments___
+
+* `line` (string) - The string that has to be padded.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-pad-method" />
+
+**pad(string, size)**
+
+Pads a string with "0" to given size.
+
+___Arguments___
+
+* `string` (string) - The string that has to be padded.
+* `size` (number) - Number of characters.
+
+___Example___
+
+```js
+var paymentReference = require("<node_modules>/node-mt940/src/object/PaymentReference.js").instance();
+
+// do some stuff here ...
+// ...
+var name = 'Hello';
+name = paymentReference.pad(name, 8);
+// Name should be now '000Hello'
+
+```
+
+___Return___
+
+- `string` - The padded string.
 
 # GVCList
-[singleton](#gvc-list-singleton-method) - Get an object of the GV code list
 
-[createCode](#gvc-list-create-code-method) - Create a new GV code object
+<a name="gvc-list-singleton-method" />
 
-[setCodes](#gvc-list-set-codes-method) - Set a collection of GV codes
+**singleton()**
 
-[addCode](#gvc-list-add-code-method) - Add a GV code to the collection
+Get an object of the GVCList.
 
-[getByCodeNumber](#gvc-list-getByCodeNumber-method) - Get a specific GV code by its code number
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `GVCList`
+
+<a name="gvc-list-create-code-method" />
+
+**createCode(code, text)**
+
+Create a new GV code object.
+
+___Arguments___
+
+* `code` (string) - A specific code.
+* `text` (string) - The code text.
+
+___Return___
+
+- `GVCode`
+
+<a name="gvc-list-set-codes-method" />
+
+**setCodes(codes, callback)**
+
+Set a collection of GV codes.
+
+___Arguments___
+
+* `codes` (string) - A linked list of GVCodes.
+* `callback` (function) - The callback function that gets the list of GVCodes or an error.
+
+___Return___
+
+- `void`
+
+<a name="gvc-list-add-code-method" />
+
+**addCode(code, callback)**
+
+Add a GVCode to the list.
+
+___Arguments___
+
+* `code` (string) - A specific code.
+* `callback` (function) - The callback function that gets the list of GVCodes or an error.
+
+___Return___
+
+- `void`
+
+<a name="gvc-list-getByCodeNumber-method" />
+
+**getByCodeNumber(number)**
+
+Get a specific GVCode object by its code.
+
+___Arguments___
+
+* `number` (string) - A specific code.
+
+___Return___
+
+- `GVCode`
 
 # GVCode
-[instance](#gv-code-instance-method) - Get a new GV code object
 
-[setCode](#gv-code-set-code-method) - Set the code
+<a name="gv-code-instance-method" />
 
-[getCode](#gv-code-get-code-method) - Get the code
+**instance()**
 
-[setText](#gv-code-set-text-method) - Set GV code text
+Get a new GV code object.
 
-[getText](#gv-code-get-text-method) - Get the GV code text
+___Arguments___
 
-[toJSON](#gv-code-to-json-method) - Get GV code information in JSON format
+No arguments.
 
-[setPrevious](#gv-code-set-previous-method) - Set the previous GV code object
+___Return___
 
-[previous](#gv-code-previous-method) - Get the previous GV code object
+- `GVCode` - A new object instance.
 
-[setNext](#gv-code-set-next-method) - Set the next GV code object
+<a name="gv-code-set-code-method" />
 
-[next](#gv-code-next-method) - Get the next GV code object
+**setCode(code)**
 
-[hasPrevious](#gv-code-has-previous-method) - Check if the current GV code object has a previous one.
+Set the code itself.
 
-[hasNext](#gv-code-has-next-method) - Check if the current GV code object has a next one.
+___Arguments___
+
+* `code` (string) - The code information of the GVC.
+
+___Return___
+
+- `GVCode` - The object reference.
+
+<a name="gv-code-get-code-method" />
+
+**getCode()**
+
+Get the code.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The GVCode information (the code itself).
+
+<a name="gv-code-set-text-method" />
+
+**setText(text)**
+
+Set GV code text.
+
+___Arguments___
+
+* `text` (string) - The text of the GVC.
+
+___Return___
+
+- `GVCode` - The object reference.
+
+<a name="gv-code-get-text-method" />
+
+**getText()**
+
+Get the GV code text.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The GVCode text information.
+
+<a name="gv-code-to-json-method" />
+
+**toJSON()**
+
+Get GV code information in JSON format.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `object` - The GVCode information converted to a literal object.
+
+<a name="gv-code-set-previous-method" />
+
+**setPrevious(previousNode)**
+
+Set the previous GV code object.
+
+___Arguments___
+
+* `previousNode` (GVCode) - A GVCode object as previous node.
+
+___Return___
+
+- `GVCode` - The previous object reference of the linked list.
+
+<a name="gv-code-previous-method" />
+
+**previous()**
+
+Get the previous GV code object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `GVCode` - The previous object reference of the linked list.
+
+<a name="gv-code-set-next-method" />
+
+**setNext(nextNode)**
+
+Set the next GV code object.
+
+___Arguments___
+
+* `nextNode` (GVCode) - A GVCode object as next node.
+
+___Return___
+
+- `GVCode` - The previous object reference of the linked list.
+
+<a name="gv-code-next-method" />
+
+**next()**
+
+Get the next GV code object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `GVCode` - The next object reference of the linked list.
+
+<a name="gv-code-has-previous-method" />
+
+**hasPrevious()**
+
+Check if the current GV code object has a previous one.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `boolean`
+
+<a name="gv-code-has-next-method" />
+
+**hasNext()**
+
+Check if the current GV code object has a next one.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `boolean`
 
 # Saldo
-[instance](#saldo-instance-method) - Get a new saldo object
 
-[setCreditDebit](#saldo-set-credit-debit-method) - Set saldo type (credit or debit)
+<a name="saldo-instance-method" />
 
-[getCreditDebit](#saldo-get-credit-debit-method) - Get saldo type (credit or debit)
+**instance()**
 
-[getCreditDebitString](#saldo-get-credit-debit-string-method) - Get saldo type as a string
+Get a new saldo object.
 
-[setBookingDate](#saldo-set-booking-date-method) - Set saldo booking date
+___Arguments___
 
-[getBookingDate](#saldo-get-booking-date-method) - Get saldo booking date
+No arguments.
 
-[getBookingDateAsTimestamp](#saldo-get-booking-date-as-timestamp-method) - Get saldo booking date as timestamp
+___Return___
 
-[getFormattedBookingDate](#saldo-get-formatted-booking-date-method) - Get saldo formatted booking date
+- `Saldo` - The saldo object.
 
-[setCurrency](#saldo-set-currency-method) - Set the saldo currency
+<a name="saldo-set-credit-debit-method" />
+
+**setCreditDebit(value)**
+
+Set the saldo type (credit or debit). Available types are: 
+- ___Saldo.TYPE_CREDIT___ 
+- ___Saldo.TYPE_DEBIT___
+
+___Arguments___
+
+* `value` (number) - The saldo type (credit or debit).
+
+___Return___
+
+- `Saldo` - The saldo object.
+
+<a name="saldo-get-credit-debit-method" />
+
+**getCreditDebit()**
+
+Get saldo type (credit or debit). The mapping for the types is: 1 => "**Credit**'", 2 => "**Debit**"
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `number` - The internal type number for the saldo type.
+
+<a name="saldo-get-credit-debit-string-method" />
+
+**getCreditDebitString()**
+
+Get saldo type as a string. The possible standard types are "C" for credit and "D" for debit.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The saldo type.
+
+<a name="saldo-set-booking-date-method" />
+
+**setBookingDate(bookingDate)**
+
+Set saldo booking date. The incoming date format is "YYmmdd". This is parsed and converted into a 
+JavaScript date object.
+
+___Arguments___
+
+* `bookingDate` (string) - The saldo booking date.
+
+___Return___
+
+- `Saldo` - The saldo object.
+
+<a name="saldo-get-booking-date-method" />
+
+**getBookingDate()**
+
+Get saldo booking date.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Date` - The JavaScript Date object.
+
+<a name="saldo-get-booking-date-as-timestamp-method" />
+
+**getBookingDateAsTimestamp()**
+
+Get saldo booking date as timestamp
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `number` - The saldo booking date converted to timestamp.
+
+<a name="saldo-get-formatted-booking-date-method" />
+
+**getFormattedBookingDate()**
+
+Get saldo formatted booking date
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The formatted date of the saldo booking. Format is "YYmmdd". So as value like '130213'.
+
+<a name="saldo-set-currency-method" />
+
+**setCurrency(currency)**
+
+Set the saldo currency
+
+___Arguments___
+
+* `currency` (string) - The saldo currency.
+
+___Return___
+
+- `Saldo` - The saldo object.
+
+<a name="saldo-get-currency-method" />
+
+**getCurrency()**
+
+Get saldo currency
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The currency of the current saldo.
 
 <a name="saldo-set-amount-method" />
 
@@ -1185,43 +1573,13 @@ var statementList = revenue.getExtracts();
 
 Set the saldo amount.
 
-___Argument___
+___Arguments___
 
 * `amount` (number) - The amount of the saldo line.
 
-__Example__
+___Return___
 
-```js
-var saldo = require("<node_modules>/node-mt940/src/object/Saldo.js").instance();
-
-// do some stuff here ...
-// ...
-saldo.setAmount(240.87);
-// ...
-```
-
-[getCurrency](#saldo-get-currency-method) - Get saldo currency
-
-<a name="saldo-set-amount-method" />
-
-**setAmount(amount)**
-
-Set the saldo amount.
-
-___Argument___
-
-* `amount` (number) - The amount of the saldo line.
-
-__Example__
-
-```js
-var saldo = require("<node_modules>/node-mt940/src/object/Saldo.js").instance();
-
-// do some stuff here ...
-// ...
-saldo.setAmount(240.87);
-// ...
-```
+- `Saldo` - The saldo object.
 
 <a name="saldo-get-amount-method" />
 
@@ -1229,13 +1587,13 @@ saldo.setAmount(240.87);
 
 Get the saldo amount.
 
-___Argument___
+___Arguments___
 
 No arguments.
 
-__Return__
+___Return___
 
-The amount of the saldo return is a number. When no amount was set before the method returns
+- `number` - The saldo amount. This could also be a float number.
 
 <a name="saldo-parse-line-method" />
 
@@ -1243,13 +1601,13 @@ The amount of the saldo return is a number. When no amount was set before the me
 
 Parse a given line of MT940 content.
 
-___Argument___
+___Arguments___
 
 * `line` (string) - The string that has to be padded.
 
-__Return__
+___Return___
 
-* `Saldo` - The saldo object itself.
+- `Saldo` - The saldo object itself.
 
 <a name="saldo-pad-method" />
 
@@ -1257,12 +1615,12 @@ __Return__
 
 Pads a string with "0" to given size.
 
-___Argument___
+___Arguments___
 
 * `string` (string) - The string that has to be padded.
 * `size` (number) - Number of characters.
 
-__Example__
+___Example___
 
 ```js
 var saldo = require("<node_modules>/node-mt940/src/object/Saldo.js").instance();
@@ -1274,3 +1632,7 @@ name = saldo.pad(name, 8);
 // Name should be now '000Hello'
 
 ```
+
+___Return___
+
+- `string` - The padded string.
