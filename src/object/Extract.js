@@ -18,8 +18,8 @@ var Extract = function() {
 };
 /**
  *
- * @param bankCode
- * @returns {Revenue}
+ * @param bankCode {string}
+ * @returns Extract
  */
 Extract.prototype.setBankCode = function(bankCode) {
   bankCode = (typeof bankCode === 'string') ? bankCode : null;
@@ -40,8 +40,8 @@ Extract.prototype.getBankCode = function() {
 
 /**
  *
- * @param accountNumber
- * @returns {Revenue}
+ * @param accountNumber {string}
+ * @returns Extract
  */
 Extract.prototype.setAccountNumber = function(accountNumber) {
   accountNumber = (typeof accountNumber === 'string') ? accountNumber : null;
@@ -62,8 +62,8 @@ Extract.prototype.getAccountNumber = function() {
 
 /**
  *
- * @param number
- * @returns {Extract}
+ * @param number {string}
+ * @returns Extract
  */
 Extract.prototype.setNumber = function(number) {
   number = (typeof number === 'string') ? number : null;
@@ -82,8 +82,8 @@ Extract.prototype.getNumber = function() {
 
 /**
  *
- * @param number
- * @returns {Extract}
+ * @param number {string}
+ * @returns Extract
  */
 Extract.prototype.setSheetNumber = function(number) {
   number = (typeof number === 'string') ? number : null;
@@ -102,9 +102,9 @@ Extract.prototype.getSheetNumber = function() {
 
 /**
  *
- * @param transaction
+ * @param transaction Transaction
  * @param callback
- * @returns {Extract}
+ * @returns Extract
  */
 Extract.prototype.addTransaction = function(transaction, callback) {
 
@@ -119,9 +119,9 @@ Extract.prototype.addTransaction = function(transaction, callback) {
 
 /**
  *
- * @param id
- * @param callback
- * @returns {*}
+ * @param id {number}
+ * @param callback {function}
+ * @returns Transaction
  */
 Extract.prototype.getTransactionById = function(id, callback) {
   var transaction = this.transactions.searchByProperty('getId', id);
@@ -131,7 +131,7 @@ Extract.prototype.getTransactionById = function(id, callback) {
 
 /**
  *
- * @returns {*}
+ * @returns LinkedList
  */
 Extract.prototype.getTransactions = function() {
   return this.transactions;
@@ -139,8 +139,8 @@ Extract.prototype.getTransactions = function() {
 
 /**
  *
- * @param saldo
- * @returns {Extract}
+ * @param saldo Saldo
+ * @returns Extract
  */
 Extract.prototype.setStartSaldo = function(saldo) {
   if (ring.instance(saldo, Saldo) === true) {
@@ -151,7 +151,7 @@ Extract.prototype.setStartSaldo = function(saldo) {
 
 /**
  *
- * @returns {null|*}
+ * @returns Saldo
  */
 Extract.prototype.getStartSaldo = function() {
   return this.saldoStart;
@@ -159,8 +159,8 @@ Extract.prototype.getStartSaldo = function() {
 
 /**
  *
- * @param saldo
- * @returns {Extract}
+ * @param saldo Saldo
+ * @returns Extract
  */
 Extract.prototype.setEndSaldo = function(saldo) {
   if (ring.instance(saldo, Saldo) === true) {
@@ -171,7 +171,7 @@ Extract.prototype.setEndSaldo = function(saldo) {
 
 /**
  *
- * @returns {null|*}
+ * @returns Saldo
  */
 Extract.prototype.getEndSaldo = function() {
   return this.saldoEnd;
@@ -179,8 +179,8 @@ Extract.prototype.getEndSaldo = function() {
 
 /**
  *
- * @param line
- * @returns {Extract}
+ * @param line {string}
+ * @returns Extract
  */
 Extract.prototype.parseLine = function(line) {
   line = (typeof line === 'string' && line !== '') ? line : null;
@@ -228,8 +228,8 @@ Extract.prototype.toCSVString = function() {
 /**
  * Set a specific object to be the previous object in a chain.
  *
- * @param previousNode {ListNode}
- * @returns {ListNode}
+ * @param previousNode Extract
+ * @returns Extract
  */
 Extract.prototype.setPrevious = function(previousNode) {
   this._previous.data = previousNode;
@@ -239,7 +239,7 @@ Extract.prototype.setPrevious = function(previousNode) {
 /**
  * Get the previous object.
  *
- * @returns {ListNode}
+ * @returns Extract
  */
 Extract.prototype.previous = function() {
   return this._previous.data;
@@ -248,8 +248,8 @@ Extract.prototype.previous = function() {
 /**
  * Set a specific object to be the next in the chain.
  *
- * @param nextNode {ListNode}
- * @returns {ListNode}
+ * @param nextNode Extract
+ * @returns Extract
  */
 Extract.prototype.setNext = function(nextNode) {
   this._next.data = nextNode;
@@ -259,7 +259,7 @@ Extract.prototype.setNext = function(nextNode) {
 /**
  * Get the next object in the chain.
  *
- * @returns {ListNode}
+ * @returns Extract
  */
 Extract.prototype.next = function() {
   return this._next.data;
@@ -284,7 +284,7 @@ Extract.prototype.hasNext = function() {
 
 /**
  *
- * @returns {Extract}
+ * @returns Extract
  */
 Extract.instance = function() {
   return new Extract();

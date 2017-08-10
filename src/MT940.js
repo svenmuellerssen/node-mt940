@@ -24,7 +24,7 @@ MT940.WRITER_SPARKASSE = 1;
 /**
  *
  * @param configuration  {object}
- * @returns {MT940}
+ * @returns MT940
  */
 MT940.prototype.setConfiguration = function(configuration) {
     this._configuration = configuration || {
@@ -51,7 +51,7 @@ MT940.prototype.setConfiguration = function(configuration) {
 /**
  *
  * @param parser {number}
- * @returns {MT940}
+ * @returns MT940
  */
 MT940.prototype.setParser = function(parser) {
   switch (parser) {
@@ -74,7 +74,7 @@ MT940.prototype.setParser = function(parser) {
 /**
  *
  * @param writer {number}
- * @returns {MT940}
+ * @returns MT940
  */
 MT940.prototype.setWriter = function(writer) {
   switch (writer) {
@@ -93,7 +93,7 @@ MT940.prototype.setWriter = function(writer) {
 /**
  *
  * @param format {number}
- * @returns {MT940}
+ * @returns MT940
  */
 MT940.prototype.setWriteAs = function(format) {
   switch(format) {
@@ -117,7 +117,7 @@ MT940.prototype.parse = function(callback) {
 
 /**
  *
- * @param revenues {Revenues}
+ * @param revenues Revenue
  * @param callback {function}
  */
 MT940.prototype.write = function(revenues, callback) {

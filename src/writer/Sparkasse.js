@@ -11,6 +11,11 @@ var WriterSparkasse = function() {
   this._writeableStream = null;
 };
 
+/**
+ * Set the path of the file to write revenue to.
+ * @param path {string}
+ * @returns WriterSparkasse
+ */
 WriterSparkasse.prototype.setFilePath = function(path) {
   path = (typeof path === 'string') ? path : null;
 
@@ -25,21 +30,21 @@ WriterSparkasse.prototype.setFilePath = function(path) {
 };
 
 /**
- * Writes all revenues into file in MT940 format.
+ * Writes revenue into file with MT940 format.
  *
- * @param revenues
- * @param callback
+ * @param revenues Revenue
+ * @param callback {function}
  */
-WriterSparkasse.prototype.writePlainText = function(revenues, callback) {
-  revenues = (ring.instance(revenues, Revenues)) ? revenues : null;
+WriterSparkasse.prototype.writePlainText = function(revenue, callback) {
+  revenues = (ring.instance(revenue, Revenues)) ? revenue : null;
 
-  if (revenues === null) {
+  if (revenue === null) {
     callback({error: {message: 'Invalid Revenue object given. No information available to write into file.', code: 0}}, null);
   } else {
     var me = this
       , path = this.path + '/' + this.filename
       , text = ''
-      , extracts = revenues.getExtracts();
+      , extracts = revenue.getExtracts();
 
     if (extracts.size == 0) {
       callback({error: {message: '', code: 0}}, null);
@@ -53,7 +58,7 @@ WriterSparkasse.prototype.writePlainText = function(revenues, callback) {
       do {
 	      extract =  extracts.next();
         // Start extract
-        text += ':20:' + revenues.getReferenceNumber() + '\n';
+        text += ':20:' + revenue.getReferenceNumber() + '\n';
         text += ':25:' + extract.getBankCode() + '/' + extract.getAccountNumber() + '\n';
         text += ':28C:' + extract.getNumber() + '/' + extract.getSheetNumber() + '\n';
         // Start saldo
@@ -91,10 +96,15 @@ WriterSparkasse.prototype.writePlainText = function(revenues, callback) {
   }
 };
 
-WriterSparkasse.prototype.writeXML = function(revenues, callback) {
-  revenues = (ring.instance(revenues, Revenues)) ? revenues : null;
+/**
+ * Write revenue with XML format.
+ * @param revenue Revenue
+ * @param callback {function}
+ */
+WriterSparkasse.prototype.writeXML = function(revenue, callback) {
+  revenue = (ring.instance(revenue, Revenues)) ? revenue : null;
 
-  if (revenues === null) {
+  if (revenue === null) {
     callback({error: {message: 'Invalid Revenue object given. No information available to write into file.', code: 0}}, null);
   } else {
     var me = this
@@ -111,9 +121,9 @@ WriterSparkasse.prototype.writeXML = function(revenues, callback) {
 };
 
 /**
- *
- * @param revenue
- * @param callback
+ * Write revenue with CSV format.
+ * @param revenue Revenue
+ * @param callback {function}
  */
 WriterSparkasse.prototype.writeCSV = function(revenue, callback) {
   revenue = (ring.instance(revenue, Revenues)) ? revenue : null;
@@ -153,10 +163,10 @@ WriterSparkasse.prototype.writeCSV = function(revenue, callback) {
 };
 
 /**
- *
- * @param text
- * @param path
- * @param callback
+ * Write text to a file at given path.
+ * @param text {string}
+ * @param path {string}
+ * @param callback {function}
  */
 var writeToFile = function(text, path, callback) {
   var me = this;
@@ -180,6 +190,10 @@ var writeToFile = function(text, path, callback) {
 
 var Writer = ring.create([WriterSparkasse, eventEmitter, AWriter], {});
 
+/**
+ * Get an writer object.
+ * @returns Writer
+ */
 Writer.instance = function() {
   return new Writer();
 };

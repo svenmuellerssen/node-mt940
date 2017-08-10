@@ -12,10 +12,10 @@ var PaymentReference = function() {
 };
 
 /**
- *
- * @param gvc
- * @param check
- * @returns {PaymentReference}
+ * Set GV code. With parameter "check" set to "true" the code will be checked against a GVC list.
+ * @param gvc {string}
+ * @param check {boolean}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setGVC = function(gvc, check) {
   gvc = (typeof parseInt(gvc) === 'number') ? gvc : null;
@@ -39,17 +39,17 @@ PaymentReference.prototype.setGVC = function(gvc, check) {
 };
 
 /**
- *
- * @returns {*}
+ * Get GV code.
+ * @returns {string}
  */
 PaymentReference.prototype.getGVC = function() {
   return this.pad(this._gvc, 3);
 };
 
 /**
- *
- * @param text
- * @returns {PaymentReference}
+ * Set booking text.
+ * @param text {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setBookingText = function(text) {
   text = (typeof text === 'string') ? text : null;
@@ -58,7 +58,7 @@ PaymentReference.prototype.setBookingText = function(text) {
 };
 
 /**
- *
+ * Get booking text.
  * @returns {string}
  */
 PaymentReference.prototype.getBookingText = function() {
@@ -66,9 +66,9 @@ PaymentReference.prototype.getBookingText = function() {
 };
 
 /**
- *
- * @param number
- * @returns {PaymentReference}
+ * Set primanota number.
+ * @param number {number}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setPrimanotaNumber = function(number) {
   number = (typeof parseInt(number) === 'number') ? parseInt(number) : null;
@@ -77,7 +77,7 @@ PaymentReference.prototype.setPrimanotaNumber = function(number) {
 };
 
 /**
- *
+ * Get primanota number.
  * @returns {number}
  */
 PaymentReference.prototype.getPrimanotaNumber = function() {
@@ -85,9 +85,9 @@ PaymentReference.prototype.getPrimanotaNumber = function() {
 };
 
 /**
- *
- * @param text
- * @returns {PaymentReference}
+ * Set text.
+ * @param text {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setText = function(text) {
   text = (typeof text === 'string') ? text : null;
@@ -96,9 +96,9 @@ PaymentReference.prototype.setText = function(text) {
 };
 
 /**
- *
- * @param text
- * @returns {PaymentReference}
+ * Add text part.
+ * @param text {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.addText = function(text) {
   text = (typeof text === 'string') ? text : null;
@@ -107,7 +107,7 @@ PaymentReference.prototype.addText = function(text) {
 };
 
 /**
- *
+ * Get text.
  * @returns {string}
  */
 PaymentReference.prototype.getText = function() {
@@ -115,9 +115,9 @@ PaymentReference.prototype.getText = function() {
 };
 
 /**
- *
- * @param bic
- * @returns {PaymentReference}
+ * Set BIC.
+ * @param bic {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setPurchaserBIC = function(bic) {
   bic = (typeof bic === 'string') ? bic : null;
@@ -126,7 +126,7 @@ PaymentReference.prototype.setPurchaserBIC = function(bic) {
 };
 
 /**
- *
+ * Get BIC.
  * @returns {string}
  */
 PaymentReference.prototype.getPurchaserBIC = function() {
@@ -134,9 +134,9 @@ PaymentReference.prototype.getPurchaserBIC = function() {
 };
 
 /**
- *
- * @param accountNumber
- * @returns {PaymentReference}
+ * Set number of the bank account.
+ * @param accountNumber {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setPurchaserAccountNumber = function(accountNumber) {
   accountNumber = (typeof accountNumber === 'string') ? accountNumber : null;
@@ -145,7 +145,7 @@ PaymentReference.prototype.setPurchaserAccountNumber = function(accountNumber) {
 };
 
 /**
- *
+ * Get number of the bank account.
  * @returns {string}
  */
 PaymentReference.prototype.getPurchaserAccountNumber = function() {
@@ -153,9 +153,9 @@ PaymentReference.prototype.getPurchaserAccountNumber = function() {
 };
 
 /**
- *
- * @param name
- * @returns {PaymentReference}
+ * Set name of bank account owner.
+ * @param name {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setAccountOwnerName = function(name) {
   name = (typeof name === 'string') ? name : null;
@@ -164,7 +164,7 @@ PaymentReference.prototype.setAccountOwnerName = function(name) {
 };
 
 /**
- *
+ * Get name of bank account owner.
  * @returns {string}
  */
 PaymentReference.prototype.getAccountOwnerName = function() {
@@ -172,9 +172,9 @@ PaymentReference.prototype.getAccountOwnerName = function() {
 };
 
 /**
- *
- * @param keyAddition
- * @returns {PaymentReference}
+ * Set text key addition.
+ * @param keyAddition {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.setTextKeyAddition = function(keyAddition) {
   keyAddition = (typeof keyAddition === 'string') ? keyAddition : null;
@@ -183,7 +183,7 @@ PaymentReference.prototype.setTextKeyAddition = function(keyAddition) {
 };
 
 /**
- *
+ * Get text key addition.
  * @returns {string}
  */
 PaymentReference.prototype.getTextKeyAddition = function() {
@@ -191,9 +191,9 @@ PaymentReference.prototype.getTextKeyAddition = function() {
 };
 
 /**
- *
- * @param line
- * @returns {PaymentReference}
+ * Parse a line of MT940 content.
+ * @param line {string}
+ * @returns PaymentReference
  */
 PaymentReference.prototype.parseLine = function(line) {
   line = (typeof line === 'string') ? line : null;
@@ -258,10 +258,10 @@ PaymentReference.prototype.parseLine = function(line) {
 };
 
 /**
- *
- * @param string
- * @param size
- * @returns {string|*}
+ * Pad the string to given length.
+ * @param string {string}
+ * @param size {number}
+ * @returns {string}
  */
 PaymentReference.prototype.pad = function(string, size) {
 	var s = String(string);
@@ -270,8 +270,8 @@ PaymentReference.prototype.pad = function(string, size) {
 };
 
 /**
- *
- * @returns {PaymentReference}
+ * Get new payment reference object.
+ * @returns PaymentReference
  */
 PaymentReference.instance = function() {
   return new PaymentReference();

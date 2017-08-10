@@ -1,5 +1,5 @@
 # MT940
-This module parses files with bank account transactions in format MT940.
+This module parses files with bank account statements in MT940 format.
 
 # Documentation
 
@@ -13,9 +13,11 @@ This module parses files with bank account transactions in format MT940.
 
 ## How to use
 
+The module contains a default _parser_ and _writer_. Another _parser/writer_ for the bank _Sparkasse_ also exists.
+
 ## MT940
 
-[constructor](#constructor-method) - --
+[constructor](#constructor-method)
 
 [singleton](#singleton-method) - Get single MT940 object
 
@@ -987,153 +989,1049 @@ var statementList = revenue.getExtracts();
 ```
 
 # Extract
-[instance](#extract-instance-method) - Get a new extract object
 
-[setBankCode](#extract-set-bank-code-method) - Set bank code of account
+<a name="extract-instance-method" />
 
-[getBankCode](#extract-get-bank-code-method) - Get bank code of account
+**instance()**
 
-[setAccountNumber](#extract-set-account-number-method) - Set bank account number
+Get a new extract object.
 
-[getAccountNumber](#extract-get-account-number-method) - Get bank account number
+___Arguments___
 
-[setNumber](#extract-set-number-method) - Set extract number
+No arguments.
 
-[getNumber](#extract-get-number-method) - Get extract number
+___Return___
 
-[setSheetNumber](#extract-set-sheet-number-method) - Set sheet number
+- `Extract` - The extract object.
 
-[getSheetNumber](#extract-get-sheet-number-method) - Get sheet number
+<a name="extract-set-bank-code-method" />
 
-[addTransaction](#extract-add-transaction-method) - Add a transaction to the extract
+**setBankCode(bankCode)**
 
-[getTransactionById](#extract-get-transaction-by-id-method) - Get a specific transaction by its id
+Set bank code of account.
 
-[getTransactions](#extract-get-transactions-method) - Get collection of added transactions
+___Arguments___
 
-[setStartSaldo](#extract-set-start-saldo-method) - Set the start saldo
+* `bankCode` (string) - The code of the bank account.
 
-[getStartSaldo](#extract-get-start-saldo-method) - Get the start saldo
+___Return___
 
-[setEndSaldo](#extract-set-end-saldo-method) - Set extract end saldo
+- `Extract` - The extract object.
 
-[getEndSaldo](#extract-get-end-saldo-method) - Get extract end saldo
+<a name="extract-get-bank-code-method" />
 
-[parseLine](#extract-parse-line-method) - Parse a given line of MT940 content
+**getBankCode()**
 
-[toCSVString](#extract-to-csv-string-method) - Get extract information in CSV format
+Get bank code of account.
 
-[setPrevious](#extract-set-previous-method) - Set the previous extract object
+___Arguments___
 
-[previous](#extract-previous-method) - Get the previous extract object
+No argument.
 
-[setNext](#extract-set-next-method) - Set the next extract object
+___Return___
 
-[next](#extract-next-method) - Get the next extract object
+- `string` - The account code.
 
-[hasPrevious](#extract-has-previous-method) - Check if the current extract object has a previous one.
+<a name="extract-set-account-number-method" />
 
-[hasNext](#extract-has-next-method) - Check if the current extract object has a next one.
+**setAccountNumber(accountNumber)**
+
+Set bank account number.
+
+___Arguments___
+
+* `accountNumber` (string) - The number of the bank account.
+
+___Return___
+
+- `Extract` - The extract object.
+
+<a name="extract-get-account-number-method" />
+
+**getAccountNumber()**
+
+Get bank account number.
+
+___Arguments___
+
+No argument.
+
+___Return___
+
+- `string` - The number of the bank account.
+
+<a name="extract-set-number-method" />
+
+**setNumber(number)**
+
+Set extract number.
+
+___Arguments___
+
+* `number` (string) - The number of the statement.
+
+___Return___
+
+- `Extract` - The extract object.
+
+<a name="extract-get-number-method" />
+
+**getNumber()**
+
+Get extract number.
+
+___Arguments___
+
+No argument.
+
+___Return___
+
+- `string` - The number of the extract.
+
+<a name="extract-set-sheet-number-method" />
+
+**setSheetNumber(number)**
+
+Set sheet number.
+
+___Arguments___
+
+* `number` (string) - The sheet number where the statement is located.
+
+___Return___
+
+- `Extract` - The extract object.
+
+<a name="extract-get-sheet-number-method" />
+
+**getSheetNumber()**
+
+Get sheet number.
+
+___Arguments___
+
+No argument.
+
+___Return___
+
+- `string` - The sheet number of the extract.
+
+<a name="extract-add-transaction-method" />
+
+**addTransaction(transaction, callback)**
+
+Add a transaction to the extract.
+
+___Arguments___
+
+* `transaction` (Transaction) - A transaction object with information about one transaction in the statement.
+* `callback` (function) - The function get two parameters:
+  - error: Will be set if an error occurs. If not the parameter is _null_.
+  - list: A reference to the transaction list where the transaction was added.
+  
+___Return___
+
+- `Extract` - The extract object.
+
+<a name="extract-get-transaction-by-id-method" />
+
+**getTransactionById(id, callback)**
+
+Get a specific transaction by its id.
+
+___Arguments___
+
+* `id` (number) - The transaction id. 
+* `callback` (function) - The function get two parameters:
+  - error: Will be set if an error occurs. If not the parameter is _null_.
+  - transaction: A reference to the transaction with given id. 
+
+___Return___
+
+- `Transaction` - The transaction object.
+
+<a name="extract-get-transactions-method" />
+
+**getTransactions()**
+
+Get list of all extract transactions.
+
+___Arguments___
+
+No argument.
+
+___Return___
+
+- `LinkedList` - The transaction list.
+
+<a name="extract-set-start-saldo-method" />
+
+**setStartSaldo(saldo)**
+
+Set the start saldo.
+
+___Arguments___
+
+* `saldo` (Saldo) - The transaction start saldo object.
+
+___Return___
+
+- `Extract` - The extract object.
+
+<a name="extract-get-start-saldo-method" />
+
+**getStartSaldo()**
+
+Get the start saldo.
+
+___Arguments___
+
+No argument.
+
+___Return___
+
+- `Saldo` - The saldo object with amount before transactions calculated.
+
+<a name="extract-set-end-saldo-method" />
+
+**setEndSaldo(saldo)**
+
+Set extract end saldo.
+
+___Arguments___
+
+* `saldo` (Saldo) - The transaction end saldo object.
+
+___Return___
+
+- `Extract` - The extract object.
+
+<a name="extract-get-end-saldo-method" />
+
+**getEndSaldo()**
+
+Get extract end saldo.
+
+___Arguments___
+
+No argument.
+
+___Return___
+
+- `Saldo` - The saldo object with amount after transactions calculated.
+
+<a name="extract-parse-line-method" />
+
+**parseLine(line)**
+
+Parse a given line of MT940 content.
+
+___Arguments___
+
+* `line` (string) - The string that has to be padded.
+
+___Return___
+
+- `Extract` - The extract object itself.
+
+<a name="extract-to-csv-string-method" />
+
+**toCSVString()**
+
+Get extract information in CSV format.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The extract information formatted with CSV format.
+
+<a name="transaction-set-previous-method" />
+
+**setPrevious(previousNode)**
+
+Set the previous extract object.
+
+___Arguments___
+
+* `previousNode` (Extract) - A extract object as previous node.
+
+___Return___
+
+- `Extract` - The previous object reference of the linked list.
+
+<a name="extract-previous-method" />
+
+**previous()**
+
+Get the previous extract object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Extract` - The previous object reference of the linked list.
+
+<a name="extract-set-next-method" />
+
+**setNext(nextNode)**
+
+Set the next extract object.
+
+___Arguments___
+
+* `nextNode` (Extract) - A extract object as next node.
+
+___Return___
+
+- `Extract` - The previous object reference of the linked list.
+
+<a name="extract-next-method" />
+
+**next()**
+
+Get the next extract object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Extract` - The next object reference of the linked list.
+
+<a name="extract-has-previous-method" />
+
+**hasPrevious()**
+
+Check if the current extract object has a previous one.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `boolean`
+
+<a name="extract-has-next-method" />
+
+**hasNext()**
+
+Check if the current extract object has a next one.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `boolean`
 
 # Transaction
-[instance](#transaction-instance-method) - Get a new transaction object
 
-[setId](#transaction-set-id-method) - Set transaction id
+<a name="transaction-instance-method" />
 
-[getId](#transaction-get-id-method) - Get transaction id
+**instance()**
 
-[setValuta](#transaction-set-valuta-method) - Set the transaction valuta
+Get a new transaction object.
 
-[getValuta](#transaction-get-valuta-method) - Get the transaction valuta
+___Arguments___
 
-[getValutaAsTimestamp](#transaction-get-valuta-as-timestamp-method) - Get transaction valuta as timestamp
+No arguments.
 
-[getFormattedValuta](#transaction-get-formatted-valuta-method) - Get formatted transaction valuta
+___Return___
 
-[setBookingDate](#transaction-set-booking-date-method) - Set transaction booking date
+- `Transaction` - The transaction object.
 
-[getBookingDate](#transaction-get-booking-date-method) - Get transaction booking date
+<a name="transaction-set-id-method" />
 
-[getFormattedBookingDate](#transaction-get-formatted-booking-date-method) - Get the formatted booking date
+**setId(id)**
 
-[setType](#transaction-set-type-method) - Set the transaction type
+Set transaction id.
 
-[getType](#transaction-get-type-method) - Get the transaction type
+___Arguments___
 
-[getTypeString](#transaction-get-type-string-method) - Get the transaction type as string
+* `id` (number) - The transaction id.
 
-[setLastCharIsoCode](#transaction-set-last-char-iso-code-method) - Set the char iso code
+___Return___
 
-[getLastCharIsoCode](#transaction-get-last-char-iso-code-method) - Get the char iso code
+- `Transaction` - The transaction object itself.
 
-[setAmount](#transaction-set-amount-method) - Set the transaction amount
+<a name="transaction-get-id-method" />
 
-[getAmount](#transaction-get-amount-method) - Get the transaction amount
+**getId()**
 
-[setBookingKey](#transaction-set-booking-key-method) - Set the transaction booking key
+Get transaction id.
 
-[getBookingKey](#transaction-get-booking-key-method) - Get the transaction booking key
+___Arguments___
 
-[setReference](#transaction-set-reference-method) - Set transaction reference
+No arguments.
 
-[getReference](#transaction-get-reference-method) - Get transaction reference
+___Return___
 
-[setPaymentReference](#transaction-set-payment-reference-method) - Set the transaction payment reference
+- `number` - The transaction id.
 
-[getPaymentReference](#transaction-get-payment-reference-method) - Get the transaction payment reference
+<a name="transaction-set-valuta-method" />
 
-[parseLine](#transaction-parse-line-method) - Parse a given line of MT940 content
+**setValuta(dateTime)**
 
-[reset](#transaction-reset-method) - Reset transaction data of the object
+Set transaction valuta date.
 
-[setPrevious](#transaction-set-previous-method) - Set the previous extract object
+___Arguments___
 
-[previous](#transaction-previous-method) - Get the previous extract object
+* `dateTime` (number) - The transaction valuta date.
 
-[setNext](#transaction-set-next-method) - Set the next extract object
+___Return___
 
-[next](#transaction-next-method) - Get the next extract object
+- `Transaction` - The transaction object itself.
 
-[hasPrevious](#transaction-has-previous-method) - Check if the current extract object has a previous one.
+<a name="transaction-get-valuta-method" />
 
-[hasNext](#transaction-has-next-method) - Check if the current extract object has a next one.
+**getValuta()**
+
+Get the transaction valuta.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Date` - The transaction valuta date. If assigned date was not valid the method returns _null_.
+
+<a name="transaction-get-valuta-as-timestamp-method" />
+
+**getValutaAsTimestamp()**
+
+Get transaction valuta as timestamp.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `number` - The valuta date converted into timestamp.
+
+<a name="transaction-get-formatted-valuta-method" />
+
+**getFormattedValuta()**
+
+Get formatted transaction valuta.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The formatted valuta date. The date format is: "mmdd".
+
+<a name="transaction-set-booking-date-method" />
+
+**setBookingDate(dateTime)**
+
+Set transaction booking date.
+
+___Arguments___
+
+* `dateTime` (number) - The transaction booking date.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-booking-date-method" />
+
+**getBookingDate()**
+
+Get transaction booking date.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Date` - The transaction booking date. If assigned date was not valid the method returns _null_.
+
+<a name="transaction-get-formatted-booking-date-method" />
+
+**getFormattedBookingDate()**
+
+Get the formatted booking date.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The formatted date. The format is: "YYmmdd".
+
+<a name="transaction-set-type-method" />
+
+**setType(type)**
+
+Set the transaction type.
+
+___Arguments___
+
+* `type` (string) - The transaction type.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-type-method" />
+
+**getType()**
+
+Get the transaction type. The possible four types are:
+
+- 'C' (_Transaction.TYPE_CREDIT_)
+- 'D' (_Transaction.TYPE_DEBIT_)
+- 'RC' (_Transaction.TYPE_CREDIT_STORNO_)
+- 'RD' (_Transaction.TYPE_DEBIT_STORNO_)
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The transaction type.
+
+<a name="transaction-get-type-string-method" />
+
+**getTypeString()** (_deprecated_)
+
+Get the transaction type as string. The possible four types are:
+
+- 'C' (_Transaction.TYPE_CREDIT_)
+- 'D' (_Transaction.TYPE_DEBIT_)
+- 'RC' (_Transaction.TYPE_CREDIT_STORNO_)
+- 'RD' (_Transaction.TYPE_DEBIT_STORNO_)
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The transaction type as string.
+
+<a name="transaction-set-last-char-iso-code-method" />
+
+**setLastCharIsoCode(char)**
+
+Set the last char of the transaction iso code.
+
+___Arguments___
+
+* `char` (string) - The last iso code char.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-last-char-iso-code-method" />
+
+**getLastCharIsoCode()**
+
+Get the last char of the iso code.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The last char of the transaction iso code.
+
+<a name="transaction-set-amount-method" />
+
+**setAmount(amount)**
+
+Set the transaction amount.
+
+___Arguments___
+
+* `amount` (number) - The transaction amount. Mostly it will be a float type.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-amount-method" />
+
+**getAmount()**
+
+Get the transaction amount.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `number` - The amount of the transaction.
+
+<a name="transaction-set-booking-key-method" />
+
+**setBookingKey(key)**
+
+Set the transaction booking key.
+
+___Arguments___
+
+* `key` (string) - The transaction booking key.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-booking-key-method" />
+
+**getBookingKey()**
+
+Get the transaction booking key.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The transaction booking key.
+
+<a name="transaction-set-reference-method" />
+
+**setReference(reference)**
+
+Set transaction reference.
+
+___Arguments___
+
+* `reference` (string) - The transaction reference.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-reference-method" />
+
+**getReference()**
+
+Get transaction reference.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The transaction reference.
+
+<a name="transaction-set-payment-reference-method" />
+
+**setPaymentReference(paymentReference)**
+
+Set the transaction payment reference.
+
+___Arguments___
+
+* `paymentReference` (PaymentReference) - An object of type _PaymentReference_.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-get-payment-reference-method" />
+
+**getPaymentReference()**
+
+Get the transaction payment reference.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `PaymentReference` - The transaction payment reference object.
+
+<a name="transaction-parse-line-method" />
+
+**parseLine(line)**
+
+Parse a given line of MT940 content.
+
+___Arguments___
+
+* `line` (string) - The string that has to be padded.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-reset-method" />
+
+**reset()**
+
+Reset transaction data of the object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Transaction` - The transaction object itself.
+
+<a name="transaction-set-previous-method" />
+
+**setPrevious(previousNode)**
+
+Set the previous transaction object.
+
+___Arguments___
+
+* `previousNode` (Transaction) - A transaction object as previous node.
+
+___Return___
+
+- `Transaction` - The previous object reference of the linked list.
+
+<a name="transaction-previous-method" />
+
+**previous()**
+
+Get the previous transaction object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Transaction` - The previous object reference of the linked list.
+
+<a name="transaction-set-next-method" />
+
+**setNext(nextNode)**
+
+Set the next extract object.
+
+___Arguments___
+
+* `nextNode` (Transaction) - A transaction object as next node.
+
+___Return___
+
+- `Transaction` - The previous object reference of the linked list.
+
+<a name="transaction-next-method" />
+
+**next()**
+
+Get the next transaction object.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `Transaction` - The next object reference of the linked list.
+
+<a name="transaction-has-previous-method" />
+
+**hasPrevious()**
+
+Check if the current transaction object has a previous one.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `boolean`
+
+<a name="transaction-has-next-method" />
+
+**hasNext()**
+
+Check if the current transaction object has a next one.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `boolean`
 
 # Payment reference
-[instance](#payment-reference-instance-method) - Get a new payment reference object
 
-[setGVC](#payment-reference-set-gvc-method) - Set the GV code
+<a name="payment-reference-instance-method" />
 
-[getGVC](#payment-reference-get-gvc-method) - Get the GV code
+**instance()**
 
-[setBookingText](#payment-reference-set-booking-text-method) - Set the booking text
+Get a new payment reference object.
 
-[getBookingText](#payment-reference-get-booking-text-method) - Get the booking text
+___Arguments___
 
-[setPrimanotaNumber](#payment-reference-set-primanota-number-method) - Set the primanota number
+No arguments.
 
-[getPrimanotaNumber](#payment-reference-get-primanota-number-method) - Get the primanota number
+___Return___
 
-[setText](#payment-reference-set-text-method) - Set text
+- `PaymentReference` - The payment reference object.
 
-[addText](#payment-reference-add-text-method) - Add text
+<a name="payment-reference-set-gvc-method" />
 
-[getText](#payment-reference-get-text-method) - Get the whole text
+**setGVC(gvc, check)**
 
-[setPurchaserBIC](#payment-reference-set-purchaser-bic-method) - Set the BIC
+Set the GV code.
 
-[getPurchaserBIC](#payment-reference-get-purchaser-bic-method) - Get the BIC
+___Arguments___
 
-[setPurchaserAccountNumber](#payment-reference-set-purchaser-account-number-method) - Set the bank account number
+* `gvc` (string) - The GC code.
+* `check` (boolean) - If set to _true_ it checks the GV code in internal list of GV codes. If the check fails the GV code is not set. Default is _false_. 
 
-[getPurchaserAccountNumber](#payment-reference-get-purchaser-account-number-method) - Get the bank account number
+___Return___
 
-[setAccountOwnerName](#payment-reference-set-account-owner-name-method) - Set the name of the bank account owner
+- `PaymentReference` - The payment reference object itself.
 
-[getAccountOwnerName](#payment-reference-get-account-owner-name-method) - Get the name of the bank account owner
+<a name="payment-reference-get-gvc-method" />
 
-[setTextKeyAddition](#payment-reference-set-text-key-addition-method) - Set the text key addition
+**getGVC()**
 
-[getTextKeyAddition](#payment-reference-get-text-key-addition-method) - Get the text key addition
+Get the GV code.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The GVC of the payment reference.
+
+<a name="payment-reference-set-booking-text-method" />
+
+**setBookingText(text)**
+
+Set the booking text.
+
+___Arguments___
+
+* `text` (string) - The booking text.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-booking-text-method" />
+
+**getBookingText()**
+
+Get the booking text.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The payment reference booking text.
+
+<a name="payment-reference-set-primanota-number-method" />
+
+**setPrimanotaNumber(number)**
+
+Set the primanota number.
+
+___Arguments___
+
+* `number` (string) - The primanota number.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-primanota-number-method" />
+
+**getPrimanotaNumber()**
+
+Get the primanota number.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The primanota number.
+
+<a name="payment-reference-set-text-method" />
+
+**setText(text)**
+
+Set whole payment reference text.
+
+___Arguments___
+
+* `text` (string) - The whole text.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-add-text-method" />
+
+**addText(text)**
+
+Add text.
+
+___Arguments___
+
+* `text` (string) - Part of the whole text.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-text-method" />
+
+**getText()**
+
+Get the whole payment reference text.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The payment reference text.
+
+<a name="payment-reference-set-purchaser-bic-method" />
+
+**setPurchaserBIC(bic)**
+
+Set the BIC information.
+
+___Arguments___
+
+* `bic` (string) - The BIC information.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-purchaser-bic-method" />
+
+**getPurchaserBIC()**
+
+Get the BIC information.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The BIC information of the bank account.
+
+<a name="payment-reference-set-purchaser-account-number-method" />
+
+**setPurchaserAccountNumber(accountNumber)**
+
+Set the bank account number.
+
+___Arguments___
+
+* `accountNumber` (string) - The number of the bank account.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-purchaser-account-number-method" />
+
+**getPurchaserAccountNumber()**
+
+Get the bank account number.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The number of the bank account.
+
+<a name="payment-reference-set-account-owner-name-method" />
+
+**setAccountOwnerName(name)**
+
+Set the name of the bank account owner.
+
+___Arguments___
+
+* `name` (string) - The name of the bank account owner.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-account-owner-name-method" />
+
+**getAccountOwnerName()**
+
+Get the name of the bank account owner.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The name of the bank account owner who get or send the amount.
+
+<a name="payment-reference-set-text-key-addition-method" />
+
+**setTextKeyAddition(keyAddition)**
+
+Set the text key addition.
+
+___Arguments___
+
+* `keyAddition` (string) - The key addition.
+
+___Return___
+
+- `PaymentReference` - The payment reference object itself.
+
+<a name="payment-reference-get-text-key-addition-method" />
+
+**getTextKeyAddition()**
+
+Get the text key addition.
+
+___Arguments___
+
+No arguments.
+
+___Return___
+
+- `string` - The key addition.
 
 <a name="payment-reference-parse-line-method" />
 
