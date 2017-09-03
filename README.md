@@ -313,7 +313,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery")({
+var mt940 = require("node-mt940")({
     parser: MT940.PARSER_DEFAULT,
     writer: MT940.WRITER_DEFAULT,
     pathToContent: '...',
@@ -336,7 +336,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     parser: MT940.PARSER_DEFAULT,
     writer: MT940.WRITER_DEFAULT,
     pathToContent: '...',
@@ -359,7 +359,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton().setConfiguration({
+var mt940 = require("node-mt940").singleton().setConfiguration({
     parser: MT940.PARSER_DEFAULT,
     writer: MT940.WRITER_DEFAULT,
     pathToContent: '...',
@@ -383,7 +383,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     writer: MT940.WRITER_DEFAULT,
     pathToContent: '...',
     writeAs: AWriter.WRITE_DEFAULT,
@@ -408,7 +408,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     parser: MT940.PARSER_DEFAULT,
     pathToContent: '...',
     writeAs: AWriter.WRITE_DEFAULT,
@@ -432,7 +432,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     parser: MT940.PARSER_DEFAULT,
     writer: MT940.WRITER_DEFAULT,
     pathToContent: '...',
@@ -456,7 +456,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     pathToContent: '...',
     pathToWrite: '...',
     gvcData: []
@@ -484,7 +484,7 @@ ___Arguments___
 ___Example___
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     pathToContent: '...',
     pathToWrite: '...',
     gvcData: []
@@ -519,7 +519,7 @@ ___Example___
 
 
 ```js
-var mt940 = require("neo4jquery").singleton({
+var mt940 = require("node-mt940").singleton({
     pathToContent: '...',
     pathToWrite: '...',
     gvcData: []
