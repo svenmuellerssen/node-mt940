@@ -1,4 +1,7 @@
 var should = require('should')
+  , fs = require('fs')
+  , os = require('os')
+  , path = require('path')
   , ring = require('ring')
   , LinkedList = require('node-linkedlist')
   , MT940 = require('../src/MT940')
@@ -11,14 +14,25 @@ var should = require('should')
   , configuration = {
     parser: MT940.PARSER_DEFAULT,
     writer: MT940.WRITER_DEFAULT,
-    pathToContent: '20160914-umsMT940.TXT',
+    pathToContent: path.join(__dirname, 'fixtures', 'sparkasse.txt'),
     writeAs: AWriter.WRITE_PLAIN_TEXT,
-    pathToWrite: './testWriteSparkasse.csv',
+    pathToWrite: '',
     gvcData: require('../src/data/gvc.js')
   }
-  , mt940 = MT940.singleton(configuration);
+  , mt940 = MT940.singleton(configuration)
+  , outputDirectory = null;
 
 describe('Test MT940', function() {
+
+  // The writer tests write into a temporary directory, never into the working directory.
+  before(function() {
+    outputDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'mt940-'));
+    configuration.pathToWrite = path.join(outputDirectory, 'testWriteSparkasse.csv');
+  });
+
+  after(function() {
+    fs.rmSync(outputDirectory, {recursive: true, force: true});
+  });
 
   it('Test MT940 library with default parser', function(done) {
     mt940.parse(function(error, revenue) {
@@ -104,7 +118,7 @@ describe('Test MT940', function() {
 	configuration.parser = MT940.PARSER_SPARKASSE;
 	configuration.writer = MT940.WRITER_SPARKASSE;
 	configuration.writeAs = AWriter.WRITE_PLAIN_TEXT;
-	configuration.pathToWrite = './testWriteSparkasse.txt';
+	configuration.pathToWrite = path.join(outputDirectory, 'testWriteSparkasse.txt');
 
 	mt940
 		.setConfiguration(configuration)
@@ -126,7 +140,7 @@ describe('Test MT940', function() {
     configuration.parser = MT940.PARSER_SPARKASSE;
     configuration.writer = MT940.WRITER_SPARKASSE;
     configuration.writeAs = AWriter.WRITE_CSV;
-	configuration.pathToWrite = './testWriteSparkasse.csv';
+	configuration.pathToWrite = path.join(outputDirectory, 'testWriteSparkasse.csv');
 
     mt940
       .setConfiguration(configuration)
