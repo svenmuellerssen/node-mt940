@@ -13,12 +13,6 @@
     "build": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {
-    "underscore": "1.6.0",
-    "async": "3.2.6",
-    "node-linkedlist": "0.1.4",
-    "ring": "2.2.3"
-  },
   "devDependencies": {
     "@types/mocha": "10.0.10",
     "@types/node": "20.19.0",

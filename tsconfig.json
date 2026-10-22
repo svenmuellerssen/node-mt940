@@ -10,5 +10,5 @@
     "skipLibCheck": true,
     "types": ["node", "mocha"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "index.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts"]
 }
