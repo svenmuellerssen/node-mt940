@@ -69,7 +69,8 @@ pnpm run build       # compiles src into dist
 ```
 
 Run the tests and the type check before you open a pull request. Decisions that change the design are written down as
-[ADRs](docs/adr/0001-core-is-the-single-basis.md).
+ADRs: [1, the core is the single basis](docs/adr/0001-core-is-the-single-basis.md) and
+[2, the public API](docs/adr/0002-public-api.md).
 
 ## License
 

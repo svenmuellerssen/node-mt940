@@ -29,3 +29,4 @@ want to do.
 - [The data model](explanation/data-model.md): why plain data, cent amounts and ISO dates.
 - [Multi-page statements](explanation/multi-page-statements.md): what `:60M:` and `:62M:` mean for the result.
 - [ADR 1: The core is the single basis](adr/0001-core-is-the-single-basis.md): why there is one parser.
+- [ADR 2: The public API](adr/0002-public-api.md): why Promises, an options object, named exports and two formats.
