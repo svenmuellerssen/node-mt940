@@ -1,0 +1,1 @@
+export { gvcText } from './gvc';
