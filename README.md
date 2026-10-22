@@ -10,6 +10,8 @@ or CSV. The API is based on Promises and has no runtime dependencies.
 
 ```
 npm install --save node-mt940
+# or
+pnpm add node-mt940
 ```
 
 Needs Node.js 18 or newer (developed and tested with Node.js 20). The package is written in TypeScript and ships its
@@ -60,9 +62,10 @@ The documentation is in [`docs`](docs/index.md), organised after [Diátaxis](htt
 ## Development
 
 ```
-npm test           # mocha, the tests are TypeScript (test/**/*.ts)
-npm run typecheck  # tsc --noEmit
-npm run build      # compiles src into dist
+pnpm install         # once, the project uses pnpm
+pnpm test            # mocha, the tests are TypeScript (test/**/*.ts)
+pnpm run typecheck   # tsc --noEmit
+pnpm run build       # compiles src into dist
 ```
 
 Run the tests and the type check before you open a pull request. Decisions that change the design are written down as

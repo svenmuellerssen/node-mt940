@@ -7,7 +7,7 @@ The examples are JavaScript. In TypeScript use `import { ... } from 'node-mt940'
 or newer.
 
 ```
-npm install --save node-mt940
+npm install --save node-mt940    # or: pnpm add node-mt940
 ```
 
 ## Parse MT940 text

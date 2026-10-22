@@ -14,6 +14,8 @@ npm init -y
 npm install node-mt940
 ```
 
+With pnpm use `pnpm init` and `pnpm add node-mt940`.
+
 ## 2. Create an example file
 
 Save this as `example.sta`. It is a statement of one account with two transactions (a debit of 14,99 EUR and a debit
