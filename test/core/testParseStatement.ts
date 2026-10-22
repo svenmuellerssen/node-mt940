@@ -332,6 +332,10 @@ const warningCases = {
       {code: 'IGNORED_LINE', tag: undefined, line: 1},
       {code: 'IGNORED_LINE', tag: '61', line: 7}
     ]
+  },
+  unknownSubfield: {
+    lines: [...header, ':61:1501160116DR14,99N037NONREF', ':86:006?00GELDAUTOMAT?38DE89370400440532013000', closing, '-'],
+    expected: [{code: 'UNKNOWN_SUBFIELD', tag: '86', line: 6}]
   }
 };
 
@@ -408,6 +412,81 @@ describe('Test parseStatement warnings', function() {
     const statement = parseStatement(text([...firstExtract, ...secondExtract]));
 
     should(statement.warnings).eql([]);
+  });
+
+  describe('sub fields of a payment information (:86:) that are not read', function() {
+    /** A statement with one transaction (:61: in line 5) and the given :86: lines (from line 6). */
+    function withPayment(...lines: string[]) {
+      return parseStatement(text([...header, ':61:1501160116DR14,99N037NONREF', ...lines, closing, '-']));
+    }
+
+    it('U1: a text without a code after a "?" is reported, the other sub fields are read.', function() {
+      const statement = withPayment(':86:006?00Warum? Darum?20Text')
+        , payment = statement.extracts[0].transactions[0].payment;
+
+      should(payment.bookingText).be.equal('Warum');
+      should(payment.text).be.equal('Text');
+      should(summary(statement.warnings)).eql([{code: 'UNKNOWN_SUBFIELD', tag: '86', line: 6}]);
+      should(statement.warnings[0].message).containEql('"? Darum"');
+    });
+
+    it('U2: a sub field with a code that is not read is reported.', function() {
+      ['?38DE89370400440532013000', '?11abc', '?35foo', '?64foo'].forEach(function(subField) {
+        const statement = withPayment(':86:006?00GELDAUTOMAT' + subField + '?20Text')
+          , payment = statement.extracts[0].transactions[0].payment;
+
+        should(payment.bookingText).be.equal('GELDAUTOMAT');
+        should(payment.text).be.equal('Text');
+        should(summary(statement.warnings)).eql([{code: 'UNKNOWN_SUBFIELD', tag: '86', line: 6}]);
+        should(statement.warnings[0].message).containEql('"' + subField + '"');
+      });
+    });
+
+    it('U3: every sub field that is not read is reported, with the line of the :86: tag.', function() {
+      const statement = withPayment(':86:006?00X?38AAA', '?35BBB?20Text?11CCC');
+
+      should(summary(statement.warnings)).eql([
+        {code: 'UNKNOWN_SUBFIELD', tag: '86', line: 6},
+        {code: 'UNKNOWN_SUBFIELD', tag: '86', line: 6},
+        {code: 'UNKNOWN_SUBFIELD', tag: '86', line: 6}
+      ]);
+      should(statement.warnings.map(warning => warning.message.match(/"(\?[0-9A-Z]+)"/)![1])).eql(['?38AAA', '?35BBB', '?11CCC']);
+    });
+
+    it('U4: the sub fields that are read and empty parts are not reported.', function() {
+      const all = withPayment(
+          ':86:006?00A?10B?20C?21D?22E?23F?24G?25H?26I?27J?28K?29L?30M?31N?32O?33P?34Q?60R?61S?62T?63U'
+        )
+        , empty = withPayment(':86:006?00A??20Text?')
+        , payment = all.extracts[0].transactions[0].payment;
+
+      should(all.warnings).eql([]);
+      should(payment.bookingText).be.equal('A');
+      should(payment.primanotaNumber).be.equal('B');
+      should(payment.text).be.equal('CDEFGHIJKLRSTU');
+      should(payment.purchaserBic).be.equal('M');
+      should(payment.purchaserAccountNumber).be.equal('N');
+      should(payment.accountOwnerName).be.equal('OP');
+      should(payment.textKeyAddition).be.equal('Q');
+
+      should(empty.warnings).eql([]);
+      should(empty.extracts[0].transactions[0].payment.text).be.equal('Text');
+    });
+
+    it('U5: an unstructured payment information with a "?" is only reported as unstructured.', function() {
+      const statement = withPayment(':86:Warum? Darum');
+
+      should(statement.warnings.map(warning => warning.code)).eql(['UNSTRUCTURED_PAYMENT']);
+      should(statement.extracts[0].transactions[0].payment.text).be.equal('Warum? Darum');
+    });
+
+    it('U6: in strict mode a sub field that is not read ends in a ParseError.', function() {
+      const error = failure(() => parseStatement(text(warningCases.unknownSubfield.lines), {strict: true}));
+
+      should(error instanceof ParseError).be.true();
+      should(error.tag).be.equal('86');
+      should(error.message).containEql('UNKNOWN_SUBFIELD').and.containEql('line 6');
+    });
   });
 
   it('P23: in strict mode every warning ends in a ParseError.', function() {

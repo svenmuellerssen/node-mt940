@@ -164,8 +164,11 @@ function parseExtract(lines: Line[], warnings: ParseWarning[]): {referenceNumber
           warn(warnings, 'PAYMENT_WITHOUT_TRANSACTION', 'The payment information has no transaction (:61:) before, it is ignored.', field.line, '86');
           break;
         }
-        const payment = parsePayment(raw)
+        const {payment, ignored} = parsePayment(raw)
           , last = transactions.length - 1;
+        // The line of a sub field on a continuation line is not known, so all are reported at the :86: tag.
+        ignored.forEach(subField =>
+          warn(warnings, 'UNKNOWN_SUBFIELD', `The sub field "?${subField}" of the payment information is not supported, it is ignored.`, field.line, '86'));
         if (payment.gvc === null) {
           warn(warnings, 'UNSTRUCTURED_PAYMENT', 'The payment information is not structured, it is taken completely as text.', field.line, '86');
         }
@@ -240,16 +243,27 @@ function parseTransaction(value: string): Transaction {
   };
 }
 
-function parsePayment(raw: string): Payment {
+/**
+ * Parse the text of a payment information (:86:). Besides the payment it returns the sub fields that are not read
+ * (without the "?"): a text without a two digit code, or a code that is not supported.
+ */
+function parsePayment(raw: string): {payment: Payment, ignored: string[]} {
   const header = /^(\d{3})\?/.exec(raw);
-  if (!header) return {...EMPTY_PAYMENT, text: raw};
+  if (!header) return {payment: {...EMPTY_PAYMENT, text: raw}, ignored: []};
 
   const payment = {...EMPTY_PAYMENT, gvc: Number(header[1])}
+    , ignored: string[] = []
     , subFields = raw.substring(3).split('?');
 
   subFields.forEach(subField => {
+    // The part before the first "?", an empty part ("??") and the part after a "?" at the end have no content.
+    if (subField === '') return;
+
     const match = /^(\d{2})([\s\S]*)$/.exec(subField);
-    if (!match) return;
+    if (!match) {
+      ignored.push(subField);
+      return;
+    }
 
     const code = Number(match[1]), value = match[2];
     if (code === 0) payment.bookingText = value;
@@ -259,9 +273,10 @@ function parsePayment(raw: string): Payment {
     else if (code === 31) payment.purchaserAccountNumber = value;
     else if (code === 32 || code === 33) payment.accountOwnerName += value;
     else if (code === 34) payment.textKeyAddition = value;
+    else ignored.push(subField);
   });
 
-  return payment;
+  return {payment, ignored};
 }
 
 /** Convert an amount like "276,02" or "14," into minor units. */
