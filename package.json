@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "mocha",
     "typecheck": "tsc --noEmit",
