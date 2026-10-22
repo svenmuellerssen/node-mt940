@@ -58,6 +58,7 @@ The documentation is in [`docs`](docs/index.md), organised after [Diátaxis](htt
 | look up a function, a field or an error | [Reference](docs/index.md#reference-look-something-up) |
 | understand the design | [Explanation](docs/index.md#explanation-understand-the-design) |
 | move from version 0.1.x | [How to migrate from 0.1.x](docs/how-to/migrate-from-0.1.md) |
+| see what changed | [Changelog](CHANGELOG.md) |
 
 ## Development
 
