@@ -2,18 +2,30 @@
   "name": "node-mt940",
   "version": "0.1.2",
   "description": "Module that parses MT940 files and provides transaction information as object.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": []
+    "test": "mocha",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "underscore": "1.6.0",
-    "async": "*",
-    "node-linkedlist": "*",
-    "ring": "*"
+    "async": "3.2.6",
+    "node-linkedlist": "0.1.4",
+    "ring": "2.2.3"
   },
   "devDependencies": {
-    "should": "*"
+    "@types/mocha": "10.0.10",
+    "@types/node": "20.19.0",
+    "mocha": "12.0.3",
+    "should": "13.2.3",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
   },
   "repository": {
     "type": "git",

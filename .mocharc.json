@@ -1,0 +1,8 @@
+{
+  "require": ["tsx/cjs"],
+  "extension": ["js", "ts"],
+  "spec": ["test/**/*.js", "test/**/*.ts"],
+  "ui": "bdd",
+  "timeout": 2000,
+  "reporter": "list"
+}
