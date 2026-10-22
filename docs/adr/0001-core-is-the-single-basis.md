@@ -37,8 +37,8 @@ Considered options:
 ## Consequences
 
 - The API breaks (see [How to migrate from 0.1.x](../how-to/migrate-from-0.1.md)): Promises instead of callbacks,
-  plain data instead of classes, amounts in cent, ISO dates, named exports, no XML writer. The version has to be
-  raised to 1.0.0 when it is released.
+  plain data instead of classes, amounts in cent, ISO dates, named exports, no XML writer. This is why the version is
+  1.0.0.
 - The core reads `:62M:` as closing balance and keeps the difference between intermediate (`:60M:`, `:62M:`) and
   absolute (`:60F:`, `:62F:`) balances in `Balance.intermediate`.
 - All old JavaScript code, its tests and the runtime dependencies (`ring`, `node-linkedlist`, `async`, `underscore`)
