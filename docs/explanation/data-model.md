@@ -43,9 +43,9 @@ that has none.
 ## Nothing is dropped silently
 
 MT940 files from banks differ in what they contain. The parser does not throw on everything unusual, and it does not
-hide it either. A tag that it does not know, a `:86:` without structure, a transaction without `:86:`: each is kept
-or skipped in a defined way and is listed in `statement.warnings` with its code, the tag and the line. You can ignore
-the warnings you accept, or turn them into errors with `strict`. See
+hide it either. A tag that it does not know, a `:86:` without structure, a sub field of `:86:` that it does not read, a
+transaction without `:86:`: each is kept or skipped in a defined way and is listed in `statement.warnings` with its
+code, the tag and the line. You can ignore the warnings you accept, or turn them into errors with `strict`. See
 [Handle warnings and errors](../how-to/handle-warnings-and-errors.md).
 
 Only what makes the result meaningless is an error: no extract, no account, no balances, a malformed line or an

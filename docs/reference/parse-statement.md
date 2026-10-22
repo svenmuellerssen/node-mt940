@@ -27,6 +27,9 @@ The result is described in [The statement](statement.md).
 - If an extract has both `:62F:` and `:62M:`, the later one is the closing balance.
 - A structured `:86:` starts with a three digit business transaction code and a `?`, for example `006?00...`. Every
   other text is unstructured and taken completely as `payment.text`.
+- A structured `:86:` is split at every `?` into sub fields. The sub fields `?00`, `?10`, `?20` to `?29`, `?30` to `?34`
+  and `?60` to `?63` are read (see [Payment](statement.md#payment)). Every other sub field is ignored and reported as
+  `UNKNOWN_SUBFIELD`. Empty parts (`??` or a `?` at the end) are not reported, nothing is lost with them.
 
 ## Warnings
 
@@ -35,6 +38,7 @@ What the parser ignores or guesses is listed in `statement.warnings`, ordered by
 | Code | Case | What the parser does |
 |---|---|---|
 | `UNSTRUCTURED_PAYMENT` | A `:86:` without business transaction code. | Keeps the text as `payment.text`, `gvc` is `null`. |
+| `UNKNOWN_SUBFIELD` | A sub field of a structured `:86:` that is not read: a text after a `?` without a two digit code (for example the `Darum` in `?00Warum? Darum`), or a code that is not supported (for example `?38` with an IBAN). | Ignores the sub field. The `message` shows it with its `?`. The `line` is the line of the `:86:` tag, also if the sub field stands on a continuation line. One warning for every sub field. |
 | `TRANSACTION_WITHOUT_PAYMENT` | A `:61:` that no `:86:` follows. | Keeps the transaction with an empty payment information. |
 | `PAYMENT_WITHOUT_TRANSACTION` | A `:86:` without a `:61:` before. | Ignores the `:86:`. |
 | `ACCOUNT_WITHOUT_BANK_CODE` | A `:25:` without `/`. | Takes the whole value as account number, `bankCode` is empty. |
