@@ -14,7 +14,7 @@
     "test": "mocha",
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
     "@types/mocha": "10.0.10",
@@ -38,5 +38,11 @@
     "name": "Sven Mueller",
     "email": "svenmue@localdomain.org"
   },
-  "license": "LGPL-3.0-or-later"
+  "license": "LGPL-3.0-or-later",
+  "packageManager": "pnpm@10.34.5",
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }
