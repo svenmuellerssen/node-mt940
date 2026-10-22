@@ -70,8 +70,8 @@ Run the tests and the type check before you open a pull request. Decisions that 
 
 ## License
 
-GNU Lesser General Public License, version 3 only (`LGPL-3.0-only`). You may use the library in programs under
-another license. Changes to the library itself have to stay under the LGPL.
+GNU Lesser General Public License, version 3 or (at your option) any later version (`LGPL-3.0-or-later`). You may
+use the library in programs under another license. Changes to the library itself have to stay under the LGPL.
 
 - `LICENSE` is the text of the GNU Lesser General Public License version 3.
 - `COPYING` is the text of the GNU General Public License version 3, which the LGPL refers to.
